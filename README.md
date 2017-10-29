@@ -1,4 +1,6 @@
-# Buscador de datos médicos
+# Buscador de datos médicos  
+[![Build Status](https://travis-ci.org/AntonioAlcM/tfg_ugr.svg?branch=master)](https://travis-ci.org/AntonioAlcM/tfg_ugr)  
+
 Vamos a desarrollar una aplicación web, que haga una búsqueda múltiple en 3 bases de datos distintas.
 Cada búsqueda contendrá, una palabra de búsqueda y un conjunto de filtros.    
 Las búsquedas se mostraran en una lista, cuyos campos serán, descripción, base de datos en la que se encontró y enlace al objeto de la base de datos. Las búsquedas tendrán un sistema de filtrado.  
