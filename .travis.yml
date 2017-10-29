@@ -5,4 +5,4 @@ python:
   - "3.5"
   - "3.6"
 script:
-  - python usuario_test.py
+  - python test.py
