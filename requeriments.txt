@@ -1,5 +1,6 @@
+confusable-homoglyphs
 Django
 django-registration
-pkg-resources
-
-
+pkg-resources==0.0.0
+pymongo
+pytz
