@@ -3,3 +3,9 @@ Django
 django-registration
 pymongo
 pytz
+click
+first
+pip-tools
+six
+virtualenv
+
