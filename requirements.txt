@@ -1,5 +1,0 @@
-Django
-django-registration
-pkg-resources
-
-
