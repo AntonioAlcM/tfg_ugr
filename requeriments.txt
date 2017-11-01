@@ -3,9 +3,9 @@ Django
 django-registration
 pymongo
 pytz
-click
-first
-pip-tools
-six
-virtualenv
+click==6.6
+first==2.0.1
+pip-tools==1.10.1
+six==1.10.0
+virtualenv==15.0.1
 
