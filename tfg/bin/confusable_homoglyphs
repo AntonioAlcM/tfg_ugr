@@ -1,0 +1,10 @@
+#!/home/antonio/github/tfg_ugr/tfg/bin/python3
+# EASY-INSTALL-ENTRY-SCRIPT: 'confusable-homoglyphs==2.0.2','console_scripts','confusable_homoglyphs'
+__requires__ = 'confusable-homoglyphs==2.0.2'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('confusable-homoglyphs==2.0.2', 'console_scripts', 'confusable_homoglyphs')()
+    )
