@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '517qwozxn5+06l1_=jz64d-m9k!)6_x%(+t20e8*k)tdw-zv1g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Buscador',
     'registration',
+    'gunicorn',
 ]
 
 MIDDLEWARE = [
