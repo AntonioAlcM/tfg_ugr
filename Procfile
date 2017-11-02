@@ -1,0 +1,1 @@
+web: gunicorn BuscadorBDMedical.wsgi --log-file -
