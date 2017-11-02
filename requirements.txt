@@ -12,3 +12,4 @@ gunicorn
 pymongo
 requests
 urllib3
+dj-database-url
