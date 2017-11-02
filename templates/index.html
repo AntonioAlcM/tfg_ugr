@@ -11,14 +11,17 @@
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 
 	<title>
-		Práctica 7
+		Buscador
 	</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script
+  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
 </head>
 
 <script>
-		function llamar_ajax_array(){
+		/*function llamar_ajax_array(){
 			$.ajax({
 				url: 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?keywords=cancer&species="homo%20sapiens"&samplecount=[1%20TO%202]',
         type: 'GET',
@@ -31,11 +34,11 @@
 					alert('esto no vá');
 				}
 			});
-};
+};*/
 
-function llamar_ajax_ncb(){
+/*function llamar_ajax_ncb(){
   $.ajax({
-    url: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=cancer&reldate=60&datetype=edat&retmax=10000&usehistory=y',
+    url: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=cancer&reldate=60&datetype=edat&retmax=10&usehistory=y&retmode=json',
     type: 'GET',
     dataType : 'json',
     success: function(datos) {
@@ -46,14 +49,21 @@ function llamar_ajax_ncb(){
       alert('esto no vá');
     }
   });
-};
+};*/
+
+	var url =  "{% url 'verEstado' %}";
+      $.getJSON(url,  function(data) {
+      alert(JSON.stringify(data));
+
+     });
+
     </script>
 <body>
 <p>
 Probando los json
 </p>
 
-					<ul class="pagination" >
-						<li onclick="llamar_ajax_ncb()"><a href="javascript:void(0);">1</a></li>
-						</ul>
+	<ul class="pagination" >
+		<li onclick="verEstado()"><a href="javascript:void(0);">1</a></li>
+	</ul>
 </body>

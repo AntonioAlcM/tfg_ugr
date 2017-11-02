@@ -20,6 +20,7 @@ from registration.backends.simple.views import RegistrationView
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
         return '/buscador/'
+        
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^buscador/', include('Buscador.urls')),

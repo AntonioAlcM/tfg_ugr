@@ -6,6 +6,7 @@ from django.core import serializers
 import json
 import requests
 import urllib
+import os
 from bson import json_util
 
 
@@ -16,7 +17,10 @@ def buscar():
 	data = json.loads(response.read().decode('utf-8'))
 	for elemento in data['esearchresult'].items():
 		print (elemento)
+def devuelve_estado(request):
+	status={ "status": "OK"}
+	opcional={ "status": "OK", "datos": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": {"JSON": status}}}
+	return  JsonResponse(opcional, safe=False)
 
 def index(request):
-    buscar()
     return render(request, 'index.html')
