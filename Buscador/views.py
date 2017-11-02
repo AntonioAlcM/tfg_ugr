@@ -19,7 +19,7 @@ def buscar():
 		print (elemento)
 def devuelve_estado(request):
 	status={ "status": "OK"}
-	opcional={ "status": "OK", "datos": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": {"JSON": status}}}
+	opcional={ "status": "OK", "datos ": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": {"JSON": status}}}
 	return  JsonResponse(opcional, safe=False)
 
 def index(request):
