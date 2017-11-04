@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
   url(r'^$', views.index, name='index'),
-  url(r'^devolverJSON/$', views.devuelve_estado, name='verEstado'),
+  url(r'^ejemplo/$', views.devuelve_estado_devolverJSON, name='verEjemplo'),
+  url(r'^rest/$', views.probando_REST, name='probandoRest'),
   ]

@@ -16,11 +16,26 @@ def buscar():
 	response = urllib.urlopen(url)
 	data = json.loads(response.read().decode('utf-8'))
 	for elemento in data['esearchresult'].items():
-		print (elemento)
-def devuelve_estado(request):
+		elemento
+	return data
+def devuelve_estado_raiz(request):
 	status={ "status": "OK"}
-	opcional={ "status": "OK", "datos ": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": {"JSON": status}}}
 	return  JsonResponse(status, safe=False)
+
+def devuelve_estado_devolverJSON(request):
+	opcional={ "status": "OK", "ejemplo ": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": "{JSON: devuelto}"}}
+	return  JsonResponse(opcional, safe=False)
+
+def probando_REST(request):
+	if request.method == 'GET':
+		url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=cancer&reldate=60&datetype=edat&retmax=10&usehistory=y&retmode=json'
+		response = urllib.urlopen(url)
+		data = json.loads(response.read().decode('utf-8'))
+		return JsonResponse(data, safe=False)
+	elif request.method == 'POST':
+		opcional={ "status": "OK", "ejemplo ": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": "{JSON: devuelto}"}}
+		return  JsonResponse(opcional, safe=False)
+
 
 def index(request):
     return render(request, 'index.html')
