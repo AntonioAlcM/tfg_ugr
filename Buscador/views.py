@@ -8,16 +8,40 @@ import requests
 import urllib
 import os
 from bson import json_util
+import threading
 
-
-
-def buscar():
-	url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=cancer&reldate=60&datetype=edat&retmax=10&usehistory=y&retmode=json'
+data_array={}
+def obtenerJson(url,tipo):
 	response = urllib.urlopen(url)
 	data = json.loads(response.read().decode('utf-8'))
-	for elemento in data['esearchresult'].items():
-		elemento
+	if(tipo=="array"):
+		data_array=data
+		print(data_array)
 	return data
+def buscar(request):
+	if request.method == "POST":
+		palabra_clave=request.POST['search']
+		url_ncbi = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term={}&reldate=60&datetype=edat&retmax=10&usehistory=y&retmode=json'.format(palabra_clave)
+		url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?keywords={}&species="homo%20sapiens"&samplecount=[1%20TO%202]'.format(palabra_clave)
+		data_ncbi=obtenerJson(url_ncbi,"ncbi")
+		hebra_array = threading.Thread(target=obtenerJson, args=(url_array,"array",))
+		hebra_array.start()
+		for elemento in data_ncbi['esearchresult'].items():
+			print(elemento)
+		print(data_array)
+		return index(request)
+	else:
+		return index(request)
+
+
+#def busqueda_avanzada(palabra_clave, tecnologia_secuenciacion,localizacion, organismo, base_datos):
+#	if (base_datos=="ncbi"):
+
+
+
+
+
+#Parte de infraestructura virtual
 def devuelve_estado_raiz(request):
 	status={ "status": "OK"}
 	return  JsonResponse(status, safe=False)
@@ -38,4 +62,4 @@ def probando_REST(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+	return render(request, 'index.html')
