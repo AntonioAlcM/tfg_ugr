@@ -30,5 +30,12 @@ class RESTTest(TestCase):
 		self.assertEqual(ruta.json()['status'],"OK")
 	def test_return_status(self):
 		ruta=self.c.get ('/buscador/rest/')
-		print(len(ruta.json().items()))
 		self.assertGreater(len(ruta.json().items()), 0)
+
+class Busqueda(TestCase):
+	def setUp(self):
+		self.c = Client()
+	def test_return_search(self):
+		ruta=self.c.post ('/buscador/',{'search': 'cancer'})
+		print (views.objects.get().search)
+		self.assertIsNotNone(ruta)

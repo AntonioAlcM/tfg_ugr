@@ -7,10 +7,10 @@ import json
 import requests
 import urllib
 import os
-from bson import json_util
 import threading
 
 data_array={}
+palabra_clave=""
 def obtenerJson(url,tipo):
 	response = urllib.urlopen(url)
 	data = json.loads(response.read().decode('utf-8'))
@@ -22,7 +22,7 @@ def buscar(request):
 	if request.method == "POST":
 		palabra_clave=request.POST['search']
 		url_ncbi = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term={}&reldate=60&datetype=edat&retmax=10&usehistory=y&retmode=json'.format(palabra_clave)
-		url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?keywords={}&species="homo%20sapiens"&samplecount=[1%20TO%202]'.format(palabra_clave)
+		url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?keywords={}&species="homo%20sapiens"'.format(palabra_clave)
 		data_ncbi=obtenerJson(url_ncbi,"ncbi")
 		hebra_array = threading.Thread(target=obtenerJson, args=(url_array,"array",))
 		hebra_array.start()
