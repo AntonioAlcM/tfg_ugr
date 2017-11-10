@@ -6,13 +6,17 @@ from django.core import serializers
 import json
 import requests
 import urllib
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 import os
 import threading
 
 data_array={}
 palabra_clave=""
 def obtenerJson(url,tipo):
-	response = urllib.urlopen(url)
+	response = urlopen(url)
 	data = json.loads(response.read().decode('utf-8'))
 	if(tipo=="array"):
 		data_array=data
@@ -53,7 +57,7 @@ def devuelve_estado_devolverJSON(request):
 def probando_REST(request):
 	if request.method == 'GET':
 		url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=cancer&reldate=60&datetype=edat&retmax=10&usehistory=y&retmode=json'
-		response = urllib.urlopen(url)
+		response = urlopen(url)
 		data = json.loads(response.read().decode('utf-8'))
 		return JsonResponse(data, safe=False)
 	elif request.method == 'POST':

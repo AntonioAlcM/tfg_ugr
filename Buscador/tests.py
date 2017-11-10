@@ -37,5 +37,5 @@ class Busqueda(TestCase):
 		self.c = Client()
 	def test_return_search(self):
 		ruta=self.c.post ('/buscador/',{'search': 'cancer'})
-		print (views.objects.get().search)
+		#print (views.objects.get().search)
 		self.assertIsNotNone(ruta)
