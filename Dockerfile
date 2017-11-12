@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 MAINTAINER Antonio Alcalá Martínez
 
 # Actualización de los repositorios e instalacion de python
-RUN apt-get update 
+RUN apt-get update
 RUN apt-get install -y python-setuptools
 RUN apt-get install -y python-dev
 RUN apt-get install -y build-essential
@@ -13,7 +13,7 @@ RUN pip install --upgrade pip
 
 # Instalación de git y clonado del proyecto
 RUN apt-get install -y git
-RUN git@github.com:AntonioAlcM/tfg_ugr.git
+RUN git clone git@github.com:AntonioAlcM/tfg_ugr.git
 
 # Instalación de las dependecncias del proyecto
 RUN cd tfg_ugr
