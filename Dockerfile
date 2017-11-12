@@ -13,8 +13,9 @@ RUN pip install --upgrade pip
 
 # Instalación de git y clonado del proyecto
 RUN apt-get install -y git
-RUN git clone git@github.com:AntonioAlcM/tfg_ugr.git
+RUN git clone https://github.com/AntonioAlcM/tfg_ugr.git
 
 # Instalación de las dependecncias del proyecto
 RUN cd tfg_ugr
 RUN pip install -r requeriments.txt
+RUN python manage.py test
