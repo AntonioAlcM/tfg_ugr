@@ -18,4 +18,3 @@ RUN git clone https://github.com/AntonioAlcM/tfg_ugr.git
 # Instalación de las dependecncias del proyecto
 RUN ls -l
 RUN pip install -r tfg_ugr/requirements.txt
-RUN python manage.py test
