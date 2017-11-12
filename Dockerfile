@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 MAINTAINER Antonio Alcalá Martínez
 
 # Actualización de los repositorios e instalacion de python
-RUN apt-get update
+RUN apt-get update && apt-get -y install sudo
 RUN sudo apt-get -y install python-dev
 RUN sudo apt-get install -y python-setuptools
 RUN sudo apt-get install -y build-essential
