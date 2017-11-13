@@ -4,7 +4,7 @@
         "alias": "IV.com"
       },
     "scripts": {
-        "start": "now --public -e NODE_ENV=production --token ottoECbrXyrWaPSd1FyF4YrF  --npm",
+        "start": "now -p -e NODE_ENV=production --token ottoECbrXyrWaPSd1FyF4YrF  --npm",
         "alias": "now alias --token ottoECbrXyrWaPSd1FyF4YrF"
         }
 }
