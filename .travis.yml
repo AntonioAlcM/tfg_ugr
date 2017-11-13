@@ -4,9 +4,12 @@ python:
 - '3.4'
 - '3.5'
 - '3.6'
+cache: npm
+after_script: npm run alias
 install:
 - pip install -r requirements.txt
 script:
+- npm run deploy
 - python manage.py migrate
 - python manage.py test
 env:
