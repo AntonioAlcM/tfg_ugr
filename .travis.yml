@@ -4,7 +4,9 @@ python:
 - '3.4'
 - '3.5'
 - '3.6'
-cache: npm
+cache:
+  -npm
+  -now
 after_script:
   -npm run alias
   -npm install -g now
