@@ -6,10 +6,8 @@ python:
 - '3.6'
 cache:
   -npm
-  -now
-after_script:
-  -npm run alias
-  -npm install -g now
+before_script: npm install -g now
+after_script: npm run alias
 install:
 - pip install -r requirements.txt
 script:
