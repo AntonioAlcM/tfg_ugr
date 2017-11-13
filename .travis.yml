@@ -11,7 +11,7 @@ after_script: npm run alias
 install:
 - pip install -r requirements.txt
 script:
-- npm run start
+- npm run deploy
 - python manage.py migrate
 - python manage.py test
 env:
