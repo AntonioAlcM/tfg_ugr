@@ -4,7 +4,7 @@
         "alias": "IV.com"
       },
     "scripts": {
-        "start": "now --public ",
+        "start": "now --public --token ottoECbrXyrWaPSd1FyF4YrF ",
         "alias": "now alias --token ottoECbrXyrWaPSd1FyF4YrF"
         }
 }
