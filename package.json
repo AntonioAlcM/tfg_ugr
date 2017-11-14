@@ -4,7 +4,7 @@
         "alias": "IV.com"
       },
     "scripts": {
-        "start": "now -e -p NODE_ENV=production --token  $NOW_TOKEN --npm",
+        "start": "now -e -p NODE_ENV=production --token  $NOW_TOKEN --docker --static",
         "alias": "now alias --token $NOW_TOKEN"
         }
 }
