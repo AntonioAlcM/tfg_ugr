@@ -9,12 +9,13 @@ RUN apt-get install -y python-dev
 RUN apt-get install -y build-essential
 RUN apt-get install -y libpq-dev
 RUN apt-get install -y python-pip
-RUN pip install --upgrade pip
+RUN pip install --upgrade
+RUN apt-get install net-tools
 
 # Instalación de git y clonado del proyecto
 RUN apt-get install -y git
 RUN git clone https://github.com/AntonioAlcM/tfg_ugr.git
-
 # Instalación de las dependecncias del proyecto
 RUN pip install -r tfg_ugr/requirements.txt
-CMD cd tfg_ugr && python manage.py runserver
+
+CMD cd tfg_ugr && gunicorn BuscadorBDMedical.wsgi --log-file - --bind 0.0.0.0:8000
