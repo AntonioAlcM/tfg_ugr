@@ -13,6 +13,8 @@ script:
 - npm run-script start
 - python manage.py migrate
 - python manage.py test
+- docker build -t antonioalcm/tfg_ugr
+- docker run -d -p 8000:80 --name iv antonioalcm/tfg_ugr
 env:
   global:
   - secure: yqYSLoDE47iJGEGChRPS4p0ruVskO5Vf/m+i8y2La749ZEZ35LdrMCAhBj8/WgNpm0iBML8R/1MU9xgLdIhD7yYxvkh76ApiT/IKAUdlgRb3yh6Iob+GZIil5shidkYWzHi4idRe4DA7DLICw4vBNxjBg1yWl+tDpmc4ESMClzWT88ie7HOV2D0Yn7bdERnc5gli8gKDSnKTZEsZAXwOg7JexuiF1KAhhUn87xfUYwA25Yr0yEKYYxNEmfgQ81H5Z8mGErc+hjwzrdxTD4NRG2PfPXpfhg2pujfkPRH753hCTgxvpcxG9pvjaDRN5s2plGJWGmNUTSlaUnLutrvR/+ukglc1aNwHSkTbV6l5b6qKx3wbbONtFHBsHW+I00uhXbbiuaEMzdnzjv4Ooc9Gj8BmKA3hn5nrO68zqkT71rWsZGlx/8E9AAK5hOh6/4PiezZZ3mal414cs02iPSqT5WmbzAkqJoYLvv/9BL6ZpFEMBPadGPefuUSxS5t2fc01SjlyLyeF0ECZIlL0DRQTakV0BnBPtn8hGyEKRKfmgCAEWmISqM6D3tXxsprK6m/LJy6LTJUWytHD9DohU6flmPlgizcJXGJmuX45kG0sBHtLJokqvsX0CQOBSnHU+3ek3K7bX+/PBYecMKpyIf1K/9KhrG1HU/zLEbbB6PeEDWY=
