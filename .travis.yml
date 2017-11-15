@@ -1,4 +1,4 @@
-language: python node_js
+language: python, node_js
 node_js:
   - '6'
   - '8'
