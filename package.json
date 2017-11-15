@@ -4,7 +4,7 @@
     "alias": "IV.com"
   },
   "scripts": {
-    "start": "now -e -p NODE_ENV=production --token  $NOW_TOKEN --docker --static",
+    "start": "now -e NODE_ENV=production --token b6crqJdYeVtoswYXMFxVDy0q --docker --static --public",
     "alias": "now alias --token $NOW_TOKEN"
   },
   "name": "tfg_ugr",
