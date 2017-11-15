@@ -5,12 +5,11 @@ python:
 - '3.5'
 cache:
   -npm
+before_script: npm install now -g, npm run clean
 after_script: npm run alias
 install:
 - pip install -r requirements.txt
 script:
-- npm install now -g
-- npm run clean
 - npm run-script start
 - python manage.py migrate
 - python manage.py test
