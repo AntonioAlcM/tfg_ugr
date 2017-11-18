@@ -11,7 +11,7 @@ class JSONTest(TestCase):
 		ruta=self.c.get ('/status/')
 		self.assertEqual(ruta.status_code,200)
 	def test_json_status_ok(self):
-		ruta=json.loads(self.c.get('/status/').content)
+		ruta=json.loads(self.c.get('/status/').content.decode('utf-8'))
 		self.assertEqual(ruta["status"],"OK")
 
 
@@ -22,10 +22,10 @@ class RESTTest(TestCase):
 		ruta=self.c.get ('/buscador/rest/')
 		self.assertEqual(ruta.status_code,200)
 	def test_return_search(self):
-		ruta=json.loads(self.c.post('/buscador/rest/').content)
+		ruta=json.loads(self.c.post('/buscador/rest/').content.decode('utf-8'))
 		self.assertEqual(ruta['status'],"OK")
 	def test_return_status(self):
-		ruta=json.loads(self.c.get ('/buscador/rest/').content)
+		ruta=json.loads(self.c.get ('/buscador/rest/').content.decode('utf-8'))
 		self.assertGreater(len(ruta.items()), 0)
 
 class Busqueda(TestCase):
