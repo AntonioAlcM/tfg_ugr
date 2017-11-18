@@ -44,14 +44,8 @@ def buscar(request):
 
 
 
-
-#Parte de infraestructura virtual
-def devuelve_estado_raiz(request):
-	status={ "status": "OK"}
-	return  JsonResponse(status, safe=False)
-
-def devuelve_estado_devolverJSON(request):
-	opcional={ "status": "OK", "ejemplo ": { "ruta": os.path.dirname(os.path.abspath(__file__)), "valor": "{JSON: devuelto}"}}
+def devuelve_status(request):
+	opcional={ "status": "OK"}
 	return  JsonResponse(opcional, safe=False)
 
 def probando_REST(request):

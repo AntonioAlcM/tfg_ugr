@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Buscador',
-    'registration',
-    'gunicorn',
+    
 ]
 
 MIDDLEWARE = [
@@ -127,5 +126,3 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 # Parse database configuration from $DATABASE_URL
-
-

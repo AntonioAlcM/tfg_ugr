@@ -15,15 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from registration.backends.simple.views import RegistrationView
 from Buscador import views
-class MyRegistrationView(RegistrationView):
-    def get_success_url(self, user):
-        return '/buscador/'
-        
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^buscador/', include('Buscador.urls')),
-    url(r'^$', views.devuelve_estado_raiz, name='verEstado'),
-
+    url(r'^status/$', views.devuelve_status, name='status'),
 ]
