@@ -59,3 +59,40 @@ Despliegue https://buscadorbdmedical.herokuapp.com/
 [Enlace a la página ejemplo](https://buscadorbdmedical.herokuapp.com/buscador/ejemplo/)
 3. Probar la aplicación REST  
 [Enlace a la página para probar REST](https://buscadorbdmedical.herokuapp.com/buscador/rest/)
+
+## Despliegue en DockerHub y Zeit  
+Para poder crear un contenedor de Docker de forma automática, lo primero que debemos hacer es crear un Dockerfile en el directorio raíz de nuestro repositorio y configurarlo utilizando los comandos  que viene explicados en la documentación. En dicho Dockerfile elegiremos la imagen de sistema operativo que queremos instalar en el contenedor, los comandos que deseamos ejecutar una vez instalado el sistema operativo, además de descargar nuestro repositorio en el contendedor. En mi caso añadiré una línea en el Dockerfile, para que despliegue la aplicación
+
+### Despliegue en DockerHub
+Para almacenar en DockerHub el contenedor que hemos definido en nuestro repositorio de github, lo que debemos hacer es irnos al menú create y elegimos la opción create automated build, seleccionamos github y le pasamos el repositorio que tiene el Dockerfile.
+![imagen](https://github.com/AntonioAlcM/IV17-18-Autoevaluacion/blob/master/Tema4/Imagenes/docker0.0.png?raw=true)  
+Para descargar el contenedor en nuestra máquina tenemos dos opciones:
+1. docker pull antonioalcm/tfg_ugr
+2. sudo docker build -t buscadorbdmedical
+
+Contenedor: https://hub.docker.com/r/antonioalcm/tfg_ugr/
+
+### Despliegue en Zeit
+Para desplegar el contenedor de Docker en Zeit, debemos instalar now, para ellos usaremos npm install now -g, una vez instalado nos vamos a la carpeta donde esta el archivo Dockerfile y ejecutamos:
+
+	sudo now --public
+
+Con este comando nos empezará a desplegar el contenedor en Zeit
+
+[Despliege en Zeit](https://antonio-fxtswcikye.now.sh/status/)
+### Despliegue en Zeit a través de travis-cli
+Para desplegar tu contenedor Docker a través de travis, lo primero que debes hacer es crear un archivo package.json, debes configurar el archivo con las siguientes líneas, estas son las líneas mínimas obligatorias:
+
+	"scripts": {
+		"clean": "now rm -y Antonio " ,
+		"start": "now -e NODE_ENV=production --token $NOW_TOKEN --docker --static 		--public",
+		"alias": "now alias --token $NOW_TOKEN"
+	}
+
+Una vez configurado el package.json, vamos a configurar el archivo .travis.yml, lo configuraremos para que travis lance el comando now y despliegue de forma automática el contenedor para ello configuraremos travis de la siguiente forma
+
+	before_script: npm install now -g, npm run clean
+	after_script: npm run alias
+	script:
+	- npm run start
+	- etc...
