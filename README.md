@@ -79,7 +79,7 @@ Para desplegar el contenedor de Docker en Zeit, debemos instalar now, para ellos
 
 Con este comando nos empezará a desplegar el contenedor en Zeit
 
-Contenedor: https://antonio-fxtswcikye.now.sh/status/
+Contenedor: https://antonio-fxtswcikye.now.sh/
 ### Despliegue en Zeit a través de travis-cli
 Para desplegar tu contenedor Docker a través de travis, lo primero que debes hacer es crear un archivo package.json, debes configurar el archivo con las siguientes líneas, estas son las líneas mínimas obligatorias:
 
