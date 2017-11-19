@@ -70,7 +70,7 @@ Para descargar el contenedor en nuestra máquina tenemos dos opciones:
 1. docker pull antonioalcm/tfg_ugr
 2. sudo docker build -t buscadorbdmedical
 
-Contenedor: https://hub.docker.com/r/antonioalcm/tfg_ugr/
+[Enlace a DockerHub](https://hub.docker.com/r/antonioalcm/tfg_ugr/)
 
 ### Despliegue en Zeit
 Para desplegar el contenedor de Docker en Zeit, debemos instalar now, para ellos usaremos npm install now -g, una vez instalado nos vamos a la carpeta donde esta el archivo Dockerfile y ejecutamos:
@@ -79,7 +79,7 @@ Para desplegar el contenedor de Docker en Zeit, debemos instalar now, para ellos
 
 Con este comando nos empezará a desplegar el contenedor en Zeit
 
-[Despliege en Zeit](https://antonio-fxtswcikye.now.sh/status/)
+Contenedor: https://antonio-fxtswcikye.now.sh/status/
 ### Despliegue en Zeit a través de travis-cli
 Para desplegar tu contenedor Docker a través de travis, lo primero que debes hacer es crear un archivo package.json, debes configurar el archivo con las siguientes líneas, estas son las líneas mínimas obligatorias:
 
