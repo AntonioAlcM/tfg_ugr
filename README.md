@@ -54,7 +54,7 @@ Con estos pasos ya tenemos desplegada nuestra aplicación. Para desplegar la apl
 Es importante configurar el archivo settings para poder desplegar correctamente la aplicación. Para ello vamos a seguir la [guía](https://devcenter.heroku.com/articles/django-app-configuration) de Heroku.
 Hay tres direcciones dentro de la aplicación web:
 1. Probar el JSON status  
-Despliegue https://buscadorbdmedical.herokuapp.com/
+Despliegue https://buscadorbdmedical.herokuapp.com/status
 2. Probar el JSON status mas el campo ejemplo  
 [Enlace a la página ejemplo](https://buscadorbdmedical.herokuapp.com/buscador/ejemplo/)
 3. Probar la aplicación REST  
