@@ -4,6 +4,7 @@
     "alias": "IV.com"
   },
   "scripts": {
+    "clean": "now rm -y Antonio --token $NOW_TOKEN" ,
     "start": "now rm -y Antonio --token $NOW_TOKEN && now -e NODE_ENV=production --token $NOW_TOKEN --docker --static --public",
     "alias": "now alias --token $NOW_TOKEN"
   },
