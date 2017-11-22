@@ -4,11 +4,11 @@ MAINTAINER Antonio Alcalá Martínez
 
 # Actualización de los repositorios e instalacion de python
 RUN apt-get update
-RUN apt-get install -y python-setuptools
-RUN apt-get install -y python-dev
-RUN apt-get install -y build-essential
-RUN apt-get install -y libpq-dev
-RUN apt-get install -y python-pip
+RUN apt-get install -U python-setuptools
+RUN apt-get install -U python-dev
+RUN apt-get install -U build-essential
+RUN apt-get install -U libpq-dev
+RUN apt-get install -U python-pip
 RUN pip install --upgrade
 RUN apt-get install net-tools
 
