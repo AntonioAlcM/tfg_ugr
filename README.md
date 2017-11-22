@@ -1,6 +1,5 @@
 # Buscador de datos médicos  
-[![Build Status](https://travis-ci.org/AntonioAlcM/tfg_ugr.svg?branch=master)](https://travis-ci.org/AntonioAlcM/tfg_ugr)  
-
+[![Build Status](https://travis-ci.org/AntonioAlcM/tfg_ugr.svg?branch=master)](https://travis-ci.org/AntonioAlcM/tfg_ugr)  ![pyversion](https://img.shields.io/pypi/pyversions/celery.svg)  [![license](https://www.gnu.org/graphics/lgplv3-88x31.png)](https://www.gnu.org/licenses/lgpl.html)  
 Vamos a desarrollar una aplicación web, que haga una búsqueda múltiple en 3 bases de datos distintas.
 Cada búsqueda contendrá, una palabra de búsqueda y un conjunto de filtros.    
 Las búsquedas se mostraran en una lista, cuyos campos serán, descripción, base de datos en la que se encontró y enlace al objeto de la base de datos. Las búsquedas tendrán un sistema de filtrado.  
