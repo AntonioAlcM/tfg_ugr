@@ -31,7 +31,12 @@ class RESTTest(TestCase):
 class Busqueda(TestCase):
 	def setUp(self):
 		self.c = Client()
+		self.buscador = views.buscador()
+
 	def test_return_search(self):
 		ruta=self.c.post ('/buscador/',{'search': 'cancer'})
 		#print (views.objects.get().search)
 		self.assertIsNotNone(ruta)
+
+	def test_buscador(self):
+		self.assertIsInstance(self.buscador, views.buscador)
