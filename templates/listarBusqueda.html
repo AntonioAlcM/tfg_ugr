@@ -1,0 +1,103 @@
+
+{% extends "index.html" %}
+
+{% block body %}
+
+{% block contenido %}
+<script>
+		function llamar_ajax(fila){
+			var url =  "{% url 'recibirDatos' %}";
+		 $.ajax({
+			 url: url,
+			 type: 'GET',
+			 dataType : 'json',
+			 success: function(datos) {
+				 Visualiza_filas (datos);
+			 },
+			 failure: function(datos) {
+				 alert('esto no vá');
+			 }
+		 });
+	 };
+		function Visualiza_filas (datos) {
+			 $(function () {
+						var content = '';
+						var ul='';
+						//content += '<tbody>'; -- **superfluous**
+						for (var index = 0; index < datos.length; index++) {
+							for (var index2 = 0; index2 < datos[index].length; index2++) {
+						content += '<tr>'
+						content += '<td> <a id="pi">'+datos[index][index2]['id'];
+			content+='</ul>';
+			content+='</a>';
+			content+='</td>';
+						content += '<td> <a id="pi">'+datos[index][index2]['accession'];
+			content+='</ul>';
+			content+='</a>';
+			content+='</td>';
+						content += '<td><a  id="pi">'+datos[index][index2]['name'];
+			content+='</ul>';
+			content+='</a>';
+			content+='</td>';
+						content += '<td> <a  id="pi">'+datos[index][index2]['releasedate'];
+			content+='</ul>';
+			content+='</a>';
+			content+='</td>';
+						content += '<td> <a  id="pi">'+datos[index][index2]['description'];
+			content+='</ul>';
+			content+='</a>';
+			content+='</td>';
+						content += '<td> <a id="pi">'+datos[index][index2]['bd'];
+			content+='</ul>';
+			content+='</a>';
+			content+='</td>';
+						content += '</tr>';
+}
+						}
+					 // content += '</tbody>';-- **superfluous**
+						//$('table tbody').replaceWith(content);  **incorrect..**
+						 $("#acrylic tbody").html(content);  // **better. give the table a ID, and replace**
+			 });
+
+
+		};
+
+	</script>
+<div class="container">
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 80%">
+			<h1 class="page-header">Restaurantes</h1>
+			<div class="table-responsive">
+				<table class="table" id="acrylic">
+					<thead>
+						<tr>
+							<th>identificador</th>
+							<th>accession</th>
+							<th>name</th>
+							<th>releasedate</th>
+							<th>description</th>
+							<th>bd</th>
+						</tr>
+					</thead>
+
+					<ul class="pagination" >
+						<li onclick="llamar_ajax(0)"><a href="javascript:void(0);">1</a></li>
+						<li onclick="llamar_ajax(10)"><a href="javascript:void(0);">2</a></li>
+						<li onclick="llamar_ajax(20)"><a href="javascript:void(0);">3</a></li>
+						<li onclick="llamar_ajax(30)"><a href="javascript:void(0);">4</a></li>
+						<li onclick="llamar_ajax(40)"><a href="javascript:void(0);">5</a></li>
+						<li onclick="llamar_ajax(50)"><a href="javascript:void(0);">6</a></li>
+						<li onclick="llamar_ajax(60)"><a href="javascript:void(0);">7</a></li>
+						<li onclick="llamar_ajax(70)"><a href="javascript:void(0);">8</a></li>
+					</ul>
+
+					<tbody>
+
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</div>
+
+{% endblock %}
+{% endblock %}

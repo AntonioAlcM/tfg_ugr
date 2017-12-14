@@ -15,3 +15,6 @@ urllib3
 dj-database-url
 celery
 django-celery
+xmljson
+redis
+amqp
