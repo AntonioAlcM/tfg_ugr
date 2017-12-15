@@ -1,6 +1,6 @@
 click
 confusable-homoglyphs
-Django
+Django=1.11.7
 django-registration
 django-registration-redux
 first

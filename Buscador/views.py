@@ -97,7 +97,7 @@ def probando_REST(request):
         return JsonResponse(data, safe=False)
     elif request.method == 'POST':
         opcional={"status": "OK"}
-        #return  JsonResponse(opcional, safe=False)
+        return  JsonResponse(opcional, safe=False)
 
 
 def index(request):
