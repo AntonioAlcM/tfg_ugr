@@ -18,3 +18,5 @@ django-celery
 xmljson
 redis
 amqp
+celery
+celery-with-redis
