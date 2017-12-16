@@ -43,19 +43,18 @@ class buscador(View):
         resultados=[]
         while resultados_busqueda.status == 'PENDING':
             time.sleep(2)
-        for i in resultados_busqueda.get()['esearchresult']['idlist']:
-            url='https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gds&id={}&retmode=json'.format(i)
+        for i in range(len(resultados_busqueda.get()['esearchresult']['idlist'])):
+            identificador=resultados_busqueda.get()['esearchresult']['idlist'][i]
+            url='https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gds&id={}&retmode=json'.format(identificador)
             resultados.append(obtenerJson.apply_async( kwargs={'url': url}))
         return resultados
     def enviarDatos(self,request):
-        print(self.data_ncbi)
         informacion = tratamientosDatos(self.expedientes,self.data_array)
         lista=[]
         while len(self.expedientes) == 0:
             time.sleep(2)
         lista.append(informacion.almacenar_datos_visualizacion_ncbi())
         lista.append(informacion.almacenar_datos_visualizacion_array())
-        print(lista)
         return  JsonResponse(lista, safe=False)
 #def busqueda_avanzada(palabra_clave, tecnologia_secuenciacion,localizacion, organismo, base_datos):
 #	if (base_datos=="ncbi"):
@@ -69,19 +68,20 @@ class tratamientosDatos():
             visualizacion.append({'id': i['id'],
             'accession': i['accession'],
             'name': i['name'], 'releasedate': i['releasedate'],
-             'description': i['description'][0]['text'],'bd': 'arrayexpress' })
+             'description': i['description'][0]['text'],'bd': 'arrayexpress', 'descarga': "null"  })
         return visualizacion
     def almacenar_datos_visualizacion_ncbi(self):
         visualizacion=[]
         tam_list=len(self.datos_ncbi)
         for i in range(0,tam_list):
-            identificador=self.datos_ncbi[i].get()['result']['uids'].pop()
+            identificador=self.datos_ncbi[i].get()['result']['uids'][0]
             visualizacion.append({'id': identificador,
             'accession': self.datos_ncbi[i].get()['result'][identificador]['accession'],
              'name':  self.datos_ncbi[i].get()['result'][identificador]['title'],
               'releasedate': self.datos_ncbi[i].get()['result'][identificador]['pdat'],
                'description':  self.datos_ncbi[i].get()['result'][identificador]['summary'],
-               'bd': 'ncbi_gds'})
+               'bd': 'ncbi_gds', 'descarga': self.datos_ncbi[i].get()['result'][identificador]['ftplink']})
+
         return visualizacion
 
 

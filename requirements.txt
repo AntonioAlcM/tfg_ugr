@@ -1,6 +1,6 @@
 click
 confusable-homoglyphs
-Django==1.11.7
+Django
 django-registration
 django-registration-redux
 first
@@ -18,5 +18,3 @@ django-celery
 xmljson
 redis
 amqp
-celery
-celery-with-redis
