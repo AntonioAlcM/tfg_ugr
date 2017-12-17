@@ -3,6 +3,7 @@ FROM python:3
 MAINTAINER Antonio Alcalá Martínez
 
 RUN apt-get update
+RUN apt-get install -y python-celery
 RUN apt-get install -y python3-celery
 RUN apt-get install -y build-essential tcl
 RUN wget http://download.redis.io/redis-stable.tar.gz
@@ -22,10 +23,10 @@ RUN cp install_server.sh redis-stable/utils/install_server.sh
 # Instalación de las dependecncias del proyecto
 
 RUN pip3 install -r requirements.txt
-EXPOSE 80
+
 RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
 RUN apt-get install -y rabbitmq-server
 RUN apt-get install -y net-tools
+EXPOSE 80
 
-
-CMD ./redis-stable/utils/install_server.sh && service rabbitmq-server start && export C_FORCE_ROOT="true" &&  (celery -A BuscadorBDMedical worker -l info &) &&  gunicorn BuscadorBDMedical.wsgi --log-file - --bind 0.0.0.0:80
+CMD ./redis-stable/utils/install_server.sh && service rabbitmq-server start && python manage.py migrate &&export C_FORCE_ROOT="true" &&  (celery -A BuscadorBDMedical worker -l info &) &&   python manage.py runserver 0.0.0.0:80

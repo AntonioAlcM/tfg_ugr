@@ -7,6 +7,7 @@ import json
 import requests
 import urllib
 import time
+from ftplib import FTP
 from json import dumps
 try:
     from urllib.request import urlopen
@@ -15,6 +16,8 @@ except ImportError:
 import os
 from Buscador.tasks import obtenerJson
 from django.views.generic import View
+import easygui as eg
+
 class buscador(View):
     def __init__(self):
         self.data_ncbi={}
@@ -29,7 +32,7 @@ class buscador(View):
             self.palabra_clave=request.POST['search']
             self.palabra_clave=self.palabra_clave.replace(' ','%20')
             self.url_ncbi = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term={}&datetype=edat&retmax=10&usehistory=y&retmode=json'.format(self.palabra_clave)
-            self.url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?keywords={}'.format(self.palabra_clave)
+            self.url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?assaycount=5&keywords={}'.format(self.palabra_clave)
             self.data_ncbi=obtenerJson.apply_async(kwargs={'url': self.url_ncbi})
             self.data_array = obtenerJson.apply_async(kwargs={'url': self.url_array})
             self.historial_busqueda.append(self.data_ncbi)
@@ -53,9 +56,38 @@ class buscador(View):
         lista=[]
         while len(self.expedientes) == 0:
             time.sleep(2)
-        lista.append(informacion.almacenar_datos_visualizacion_ncbi())
-        lista.append(informacion.almacenar_datos_visualizacion_array())
+        while self.data_array == 'PENDING':
+            time.sleep(2)
+        lista=informacion.unirVectores()
         return  JsonResponse(lista, safe=False)
+class descargaDeContenido():
+    def enlacesFTP(self,request):
+        if request.method == 'POST':
+            enlace=request.POST['enlace']
+            print(enlace)
+            direccion=enlace.split('//',1)
+            print(direccion)
+            direccion=direccion[1].split('/',1)
+            print(direccion)
+            ftp = FTP()
+            ftp.connect(direccion[0])
+            ftp.login()
+            ftp.cwd(direccion[1])
+            dirs=ftp.nlst()
+            for i in dirs:
+                ftp.cwd(i)
+                arch=ftp.nlst()
+                for j in arch:
+                    archivo = eg.filesavebox(title="Guardar",
+                    default=j)
+                    tam=archivo.count('/')
+                    ruta_guardado=""
+                    for rut in archivo.split('/',tam):
+                        ruta_guardado+='/'
+                        ruta_guardado+=rut
+                    ftp.retrbinary('RETR '+j, open(ruta_guardado, 'wb').write)
+            ftp.quit()
+
 #def busqueda_avanzada(palabra_clave, tecnologia_secuenciacion,localizacion, organismo, base_datos):
 #	if (base_datos=="ncbi"):
 class tratamientosDatos():
@@ -63,27 +95,34 @@ class tratamientosDatos():
         self.datos_ncbi=resultados_ncbi[:]
         self.resultados_array=resultados_array
     def almacenar_datos_visualizacion_array(self):
-        visualizacion=[]
+        visualizacion_array=[]
         for i in self.resultados_array.get()['experiments']['experiment']:
-            visualizacion.append({'id': i['id'],
+            visualizacion_array.append({'id': i['id'],
             'accession': i['accession'],
             'name': i['name'], 'releasedate': i['releasedate'],
              'description': i['description'][0]['text'],'bd': 'arrayexpress', 'descarga': "null"  })
-        return visualizacion
+        return visualizacion_array
     def almacenar_datos_visualizacion_ncbi(self):
-        visualizacion=[]
         tam_list=len(self.datos_ncbi)
+        visualizacion_ncbi=[]
         for i in range(0,tam_list):
             identificador=self.datos_ncbi[i].get()['result']['uids'][0]
-            visualizacion.append({'id': identificador,
+            visualizacion_ncbi.append({'id': identificador,
             'accession': self.datos_ncbi[i].get()['result'][identificador]['accession'],
              'name':  self.datos_ncbi[i].get()['result'][identificador]['title'],
               'releasedate': self.datos_ncbi[i].get()['result'][identificador]['pdat'],
                'description':  self.datos_ncbi[i].get()['result'][identificador]['summary'],
                'bd': 'ncbi_gds', 'descarga': self.datos_ncbi[i].get()['result'][identificador]['ftplink']})
+        return visualizacion_ncbi
 
-        return visualizacion
-
+    def unirVectores(self):
+        vector_ncbi=[]
+        vector_array=[]
+        vector_ncbi=self.almacenar_datos_visualizacion_ncbi()
+        vector_array=self.almacenar_datos_visualizacion_ncbi()
+        for i in vector_array:
+            vector_ncbi.append(i)
+        return vector_ncbi
 
 def devuelve_status(request):
     opcional={"status": "OK"}

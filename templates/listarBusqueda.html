@@ -5,71 +5,118 @@
 
 {% block contenido %}
 <script>
-		function llamar_ajax(fila){
-			var url =  "{% url 'recibirDatos' %}";
-		 $.ajax({
-			 url: url,
-			 type: 'GET',
-			 dataType : 'json',
-			 success: function(datos) {
-				 Visualiza_filas (datos);
-			 },
-			 failure: function(datos) {
-				 alert('esto no vá');
-			 }
-		 });
-	 };
-		function Visualiza_filas (datos) {
-			 $(function () {
-						var content = '';
-						var ul='';
-						//content += '<tbody>'; -- **superfluous**
-						for (var index = 0; index < datos.length; index++) {
-							for (var index2 = 0; index2 < datos[index].length; index2++) {
-						content += '<tr>'
-						content += '<td> <a id="pi">'+datos[index][index2]['id'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '<td> <a id="pi">'+datos[index][index2]['accession'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '<td><a  id="pi">'+datos[index][index2]['name'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '<td> <a  id="pi">'+datos[index][index2]['releasedate'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '<td> <a  id="pi">'+datos[index][index2]['description'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '<td> <a id="pi">'+datos[index][index2]['bd'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '<td> <a id="pi">'+datos[index][index2]['descarga'];
-			content+='</ul>';
-			content+='</a>';
-			content+='</td>';
-						content += '</tr>';
+	var datos_recibidos;
+	var n_muestras=20;
+	llamar_ajax();
+	function llamar_ajax(){
+		var url =  "{% url 'recibirDatos' %}";
+	 $.ajax({
+		 url: url,
+		 type: 'GET',
+		 dataType : 'json',
+		 success: function(datos) {
+			 datos_recibidos=datos;
+			 Visualiza_filas (0 , n_muestras);
+		 },
+		 failure: function(datos) {
+			 alert('esto no vá');
+		 }
+	 });
+ };
+	 function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
-						}
-					 // content += '</tbody>';-- **superfluous**
-						//$('table tbody').replaceWith(content);  **incorrect..**
-						 $("#acrylic tbody").html(content);  // **better. give the table a ID, and replace**
-			 });
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+	 function enviarFTP(){
+		 enlace=document.getElementById("enlace").text;
+		 var url =  "{% url 'enlacesFTP' %}";
+		 $.ajax({
+    // la URL para la petición
+    url : url,
+    data : { enlace : enlace },
+    type : 'POST',
+    dataType : 'json',
+    success : function(json) {
+        alert("comenzando la descarga")
+    },
+
+    error : function(xhr, status) {
+        alert('No se pudo establecer conexión');
+    }
+});
+};
+
+		function Visualiza_filas (inicio, fin) {
+				 $(function () {
+							var content = '';
+							var ul='';
+							//content += '<tbody>'; -- **superfluous**
+								for (var index = inicio; index < datos_recibidos.length ; index++) {
+							content += '<tr>'
+							content += '<td> <a id="pi">'+datos_recibidos[index]['id'];
+				content+='</a>';
+				content+='</td>';
+							content += '<td> <a id="pi">'+datos_recibidos[index]['accession'];
+				content+='</a>';
+				content+='</td>';
+							content += '<td><a  id="pi">'+datos_recibidos[index]['name'];
+				content+='</a>';
+				content+='</td>';
+							content += '<td> <a  id="pi">'+datos_recibidos[index]['releasedate'];
+				content+='</a>';
+				content+='</td>';
+							content += '<td> <a  id="pi">'+datos_recibidos[index]['description'];
+				content+='</a>';
+				content+='</td>';
+							content += '<td> <a id="pi">'+datos_recibidos[index]['bd'];
+				content+='</a>';
+				content+='</td>';
+							content += '<td> <a onclick="return enviarFTP();" id="pi">'+datos_recibidos[index]['descarga'];
+				content+='</a>';
+				content+='</td>';
+							content += '</tr>';
+
+								}
+
+						 // content += '</tbody>';-- **superfluous**
+							//$('table tbody').replaceWith(content);  **incorrect..**
+							$("#acrylic tbody").html(content);  // **better. give the table a ID, and replace**
+				 });
 
 
+			};
+		function paginador(fila_inicio){
+			alert("asdasd")
+				Visualiza_filas(fila_inicio, fila_inicio+n_muestras);
 		};
-
 	</script>
 <div class="container">
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 80%">
-			<h1 class="page-header">Restaurantes</h1>
+			<h1 class="page-header">Experimentos</h1>
 			<div class="table-responsive">
 				<table class="table" id="acrylic">
 					<thead>
@@ -85,14 +132,14 @@
 					</thead>
 
 					<ul class="pagination" >
-						<li onclick="llamar_ajax(0)"><a href="javascript:void(0);">1</a></li>
-						<li onclick="llamar_ajax(10)"><a href="javascript:void(0);">2</a></li>
-						<li onclick="llamar_ajax(20)"><a href="javascript:void(0);">3</a></li>
-						<li onclick="llamar_ajax(30)"><a href="javascript:void(0);">4</a></li>
-						<li onclick="llamar_ajax(40)"><a href="javascript:void(0);">5</a></li>
-						<li onclick="llamar_ajax(50)"><a href="javascript:void(0);">6</a></li>
-						<li onclick="llamar_ajax(60)"><a href="javascript:void(0);">7</a></li>
-						<li onclick="llamar_ajax(70)"><a href="javascript:void(0);">8</a></li>
+						<li onclick="paginador(0)"><a href="javascript:void(0);">1</a></li>
+						<li onclick="paginador(20)"><a href="javascript:void(0);">2</a></li>
+						<li onclick="paginador(40)"><a href="javascript:void(0);">3</a></li>
+						<li onclick="paginador(60)"><a href="javascript:void(0);">4</a></li>
+						<li onclick="paginador(80)"><a href="javascript:void(0);">5</a></li>
+						<li onclick="paginador(100)"><a href="javascript:void(0);">6</a></li>
+						<li onclick="paginador(120)"><a href="javascript:void(0);">7</a></li>
+						<li onclick="paginador(140)"><a href="javascript:void(0);">8</a></li>
 					</ul>
 
 					<tbody>
