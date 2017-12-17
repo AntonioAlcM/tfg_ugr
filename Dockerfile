@@ -26,7 +26,6 @@ RUN pip3 install -r requirements.txt
 
 RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
 RUN apt-get install -y rabbitmq-server
-RUN apt-get install -y net-tools
 EXPOSE 80
 
-CMD ./redis-stable/utils/install_server.sh && service rabbitmq-server start && python manage.py migrate &&export C_FORCE_ROOT="true" &&  (celery -A BuscadorBDMedical worker -l info &) &&   python manage.py runserver 0.0.0.0:80
+CMD ./redis-stable/utils/install_server.sh && service rabbitmq-server start && python3 manage.py migrate &&export C_FORCE_ROOT="true" &&  (celery -A BuscadorBDMedical worker -l info &) &&   python3 manage.py runserver 0.0.0.0:80
