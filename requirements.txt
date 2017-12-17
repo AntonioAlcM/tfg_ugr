@@ -18,3 +18,4 @@ django-celery
 xmljson
 redis
 amqp
+easygui
