@@ -71,9 +71,8 @@ if [ "$(id -u)" -ne 0 ] ; then
 fi
 
 if ! echo $REDIS_PORT | egrep -q '^[0-9]+$' ; then
-	_MANUAL_EXECUTION=true
+	_MANUAL_EXECUTION=false
 	#Read the redis port
-	read  -p "Please select the redis port for this instance: [$_REDIS_PORT] " REDIS_PORT
 	if ! echo $REDIS_PORT | egrep -q '^[0-9]+$' ; then
 		echo "Selecting default: $_REDIS_PORT"
 		REDIS_PORT=$_REDIS_PORT
@@ -81,10 +80,10 @@ if ! echo $REDIS_PORT | egrep -q '^[0-9]+$' ; then
 fi
 
 if [ -z "$REDIS_CONFIG_FILE" ] ; then
-	_MANUAL_EXECUTION=true
+	_MANUAL_EXECUTION=false
 	#read the redis config file
 	_REDIS_CONFIG_FILE="/etc/redis/$REDIS_PORT.conf"
-	read -p "Please select the redis config file name [$_REDIS_CONFIG_FILE] " REDIS_CONFIG_FILE
+ REDIS_CONFIG_FILE
 	if [ -z "$REDIS_CONFIG_FILE" ] ; then
 		REDIS_CONFIG_FILE=$_REDIS_CONFIG_FILE
 		echo "Selected default - $REDIS_CONFIG_FILE"
@@ -92,10 +91,9 @@ if [ -z "$REDIS_CONFIG_FILE" ] ; then
 fi
 
 if [ -z "$REDIS_LOG_FILE" ] ; then
-	_MANUAL_EXECUTION=true
+	_MANUAL_EXECUTION=false
 	#read the redis log file path
 	_REDIS_LOG_FILE="/var/log/redis_$REDIS_PORT.log"
-	read -p "Please select the redis log file name [$_REDIS_LOG_FILE] " REDIS_LOG_FILE
 	if [ -z "$REDIS_LOG_FILE" ] ; then
 		REDIS_LOG_FILE=$_REDIS_LOG_FILE
 		echo "Selected default - $REDIS_LOG_FILE"
@@ -103,10 +101,10 @@ if [ -z "$REDIS_LOG_FILE" ] ; then
 fi
 
 if [ -z "$REDIS_DATA_DIR" ] ; then
-	_MANUAL_EXECUTION=true
+	_MANUAL_EXECUTION=false
 	#get the redis data directory
 	_REDIS_DATA_DIR="/var/lib/redis/$REDIS_PORT"
-	read -p "Please select the data directory for this instance [$_REDIS_DATA_DIR] " REDIS_DATA_DIR
+ REDIS_DATA_DIR
 	if [ -z "$REDIS_DATA_DIR" ] ; then
 		REDIS_DATA_DIR=$_REDIS_DATA_DIR
 		echo "Selected default - $REDIS_DATA_DIR"
@@ -114,10 +112,10 @@ if [ -z "$REDIS_DATA_DIR" ] ; then
 fi
 
 if [ ! -x "$REDIS_EXECUTABLE" ] ; then
-	_MANUAL_EXECUTION=true
+	_MANUAL_EXECUTION=false
 	#get the redis executable path
 	_REDIS_EXECUTABLE=`command -v redis-server`
-	read -p "Please select the redis executable path [$_REDIS_EXECUTABLE] " REDIS_EXECUTABLE
+ REDIS_EXECUTABLE
 	if [ ! -x "$REDIS_EXECUTABLE" ] ; then
 		REDIS_EXECUTABLE=$_REDIS_EXECUTABLE
 

@@ -9,6 +9,7 @@ import urllib
 import time
 from ftplib import FTP
 from json import dumps
+
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -31,7 +32,7 @@ class buscador(View):
         if request.method == "POST":
             self.palabra_clave=request.POST['search']
             self.palabra_clave=self.palabra_clave.replace(' ','%20')
-            self.url_ncbi = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term={}&datetype=edat&retmax=10&usehistory=y&retmode=json'.format(self.palabra_clave)
+            self.url_ncbi = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term={}&datetype=edat&retmax=40&usehistory=y&retmode=json'.format(self.palabra_clave)
             self.url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?assaycount=5&keywords={}'.format(self.palabra_clave)
             self.data_ncbi=obtenerJson.apply_async(kwargs={'url': self.url_ncbi})
             self.data_array = obtenerJson.apply_async(kwargs={'url': self.url_array})
@@ -64,20 +65,21 @@ class descargaDeContenido():
     def enlacesFTP(self,request):
         if request.method == 'POST':
             enlace=request.POST['enlace']
-            print(enlace)
             direccion=enlace.split('//',1)
-            print(direccion)
-            direccion=direccion[1].split('/',1)
-            print(direccion)
+            direccion_cortada=direccion[1].split('/',1)
             ftp = FTP()
-            ftp.connect(direccion[0])
+            ftp.connect(direccion_cortada[0],21,-999)
             ftp.login()
-            ftp.cwd(direccion[1])
+            ftp.cwd(direccion_cortada[1])
+
             dirs=ftp.nlst()
             for i in dirs:
                 ftp.cwd(i)
                 arch=ftp.nlst()
                 for j in arch:
+                    print("sdfsdfsdf")
+                    #ftp.retrbinary('RETR %s' % os.path.basename(j),file_handler)#La recepción
+                    print("sdfsdfsdf")
                     archivo = eg.filesavebox(title="Guardar",
                     default=j)
                     tam=archivo.count('/')
@@ -85,8 +87,9 @@ class descargaDeContenido():
                     for rut in archivo.split('/',tam):
                         ruta_guardado+='/'
                         ruta_guardado+=rut
-                    ftp.retrbinary('RETR '+j, open(ruta_guardado, 'wb').write)
+                    ftp.retrbinary('RETR '+j, open('~/', 'wb').write)
             ftp.quit()
+            return null
 
 #def busqueda_avanzada(palabra_clave, tecnologia_secuenciacion,localizacion, organismo, base_datos):
 #	if (base_datos=="ncbi"):

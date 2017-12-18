@@ -95,7 +95,7 @@ $.ajaxSetup({
 							content += '<td> <a id="pi">'+datos_recibidos[index]['bd'];
 				content+='</a>';
 				content+='</td>';
-							content += '<td> <a  onclick="return enviarFTP();" id="enlace">'+datos_recibidos[index]['descarga'];
+							content += '<td> <a  onclick="return abrirCarpetaDescarga();" id="enlace">'+datos_recibidos[index]['descarga'];
 				content+='</a>';
 				content+='</td>';
 							content += '</tr>';
@@ -110,8 +110,11 @@ $.ajaxSetup({
 
 			};
 		function paginador(fila_inicio){
-			alert("asdasd")
 				Visualiza_filas(fila_inicio, fila_inicio+n_muestras);
+		};
+		function abrirCarpetaDescarga(){
+	 			enlace=document.getElementById("enlace").text;
+				windows.open(enlace, '_blank');
 		};
 	</script>
 <div class="container">
