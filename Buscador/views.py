@@ -17,7 +17,7 @@ except ImportError:
 import os
 from Buscador.tasks import obtenerJson
 from django.views.generic import View
-import easygui as eg
+
 
 class buscador(View):
     def __init__(self):
@@ -80,8 +80,8 @@ class descargaDeContenido():
                     print("sdfsdfsdf")
                     #ftp.retrbinary('RETR %s' % os.path.basename(j),file_handler)#La recepción
                     print("sdfsdfsdf")
-                    archivo = eg.filesavebox(title="Guardar",
-                    default=j)
+                    #archivo = eg.filesavebox(title="Guardar",
+                    #default=j)
                     tam=archivo.count('/')
                     ruta_guardado=""
                     for rut in archivo.split('/',tam):
@@ -122,7 +122,7 @@ class tratamientosDatos():
         vector_ncbi=[]
         vector_array=[]
         vector_ncbi=self.almacenar_datos_visualizacion_ncbi()
-        vector_array=self.almacenar_datos_visualizacion_ncbi()
+        vector_array=self.almacenar_datos_visualizacion_array()
         for i in vector_array:
             vector_ncbi.append(i)
         return vector_ncbi

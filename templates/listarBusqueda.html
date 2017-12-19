@@ -74,28 +74,24 @@ $.ajaxSetup({
 				 $(function () {
 							var content = '';
 							var ul='';
-							//content += '<tbody>'; -- **superfluous**
-								for (var index = inicio; index < datos_recibidos.length ; index++) {
+							//content += '<tbody>'; -- **superfluous**finf
+								for (var index = inicio; (index < datos_recibidos.length) && (index < fin) ; index++) {
 							content += '<tr>'
-							content += '<td> <a id="pi">'+datos_recibidos[index]['id'];
-				content+='</a>';
+							content += '<td>'+(index+1);
 				content+='</td>';
-							content += '<td> <a id="pi">'+datos_recibidos[index]['accession'];
-				content+='</a>';
+							content += '<td>'+datos_recibidos[index]['id'];
 				content+='</td>';
-							content += '<td><a  id="pi">'+datos_recibidos[index]['name'];
-				content+='</a>';
+							content += '<td>'+datos_recibidos[index]['accession'];
 				content+='</td>';
-							content += '<td> <a  id="pi">'+datos_recibidos[index]['releasedate'];
-				content+='</a>';
+							content += '<td>'+datos_recibidos[index]['name'];
 				content+='</td>';
-							content += '<td> <a  id="pi">'+datos_recibidos[index]['description'];
-				content+='</a>';
+							content += '<td>'+datos_recibidos[index]['releasedate'];
 				content+='</td>';
-							content += '<td> <a id="pi">'+datos_recibidos[index]['bd'];
-				content+='</a>';
+							content += '<td>'+datos_recibidos[index]['description'];
 				content+='</td>';
-							content += '<td> <a  onclick="return abrirCarpetaDescarga();" id="enlace">'+datos_recibidos[index]['descarga'];
+							content += '<td>'+datos_recibidos[index]['bd'];
+				content+='</td>';
+							content += '<td> <a  method="po" id="enlace">'+datos_recibidos[index]['descarga'];
 				content+='</a>';
 				content+='</td>';
 							content += '</tr>';
@@ -116,7 +112,23 @@ $.ajaxSetup({
 	 			enlace=document.getElementById("enlace").text;
 				windows.open(enlace, '_blank');
 		};
+
+
 	</script>
+	<?php
+	echo "aqui";
+	$ftp_server = "ftp.ncbi.nlm.nih.gov";
+$ftp_conn = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
+$login = ftp_login();
+	$id_ftp=ConectarFTP(); //Obtiene un manejador y se conecta al Servidor FTP
+	$lista=ftp_nlist($id_ftp,$_POST["enlace"]); //Devuelve un array con los nombres de ficheros
+	while ($item=array_pop($lista)) //Se leen todos los ficheros y directorios del directorio
+	{
+		echo "Archivo $item";
+
+	}
+	ftp_close($ftp_conn);
+	?>
 <div class="container">
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="width: 80%">
 			<h1 class="page-header">Experimentos</h1>
@@ -124,6 +136,7 @@ $.ajaxSetup({
 				<table class="table" id="acrylic">
 					<thead>
 						<tr>
+							<th>nº</th>
 							<th>identificador</th>
 							<th>accession</th>
 							<th>name</th>
