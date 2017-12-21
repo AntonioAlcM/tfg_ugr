@@ -28,4 +28,4 @@ RUN pip3 install -r requirements.txt
 RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
 RUN apt-get install -y rabbitmq-server
 EXPOSE 80
-CMD (./usr/local/bin/redis-server conf_redis/6379.conf &)&& python3 manage.py migrate &&  (update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && service rabbitmq-server start && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info
+CMD (./usr/local/bin/redis-server conf_redis/6379.conf &)&& python3 manage.py migrate && pkill redis &&(update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && service rabbitmq-server start && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info
