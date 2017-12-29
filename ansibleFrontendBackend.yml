@@ -1,0 +1,43 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  vars:
+   token_bot: "{{ lookup('env','token_bot') }}"
+   DATABASE_URL: "{{ lookup('env','DATABASE_URL')}}"
+  pre_tasks:
+  - name: Instalar python
+    become: yes
+    raw: test -e /usr/bin/python || (apt-get update && apt-get install -y python-minimal)
+  tasks:
+    - name: actualizar update
+      apt: name=apt state=present
+    - name: Instalar build-essential
+      apt: name=build-essential state=present
+    - name: Instalar python
+      apt: name=python state=present
+      apt: name=python-pip state=present
+    - name: Instalar python 3
+      apt: name=python3 state=present
+    - name: Instalar python 3 pip
+      apt: name=python3-pip state=present
+    - name: Actualizar pip
+      command: pip install -U pip
+    - name: Actualizar pip
+      command: pip3 install -U pip
+    - name: Instalar bibliotecas
+      apt: name=python-setuptools state=present
+      apt: name=python-dev state=present
+      apt: name=libgdbm-dev state=present
+      apt: name=libncurses5-dev state=present
+      apt: name=libpq-dev state=present
+    - name: Instalar celery
+      apt: name=python-celery state=present
+    - name: Instalar celery-common
+      apt: name=python-celery-common state=present
+    - name: Instalar celery python 3
+      apt: name=python3-celery state=present
+    - name: Instalar git
+      apt: name=git state=present
+    - name: Instalar Flask
+      apt: name=python3-flask state=present

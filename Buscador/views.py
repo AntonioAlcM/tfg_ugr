@@ -6,7 +6,6 @@ from django.core import serializers
 import json, requests, urllib, time, os
 from ftplib import FTP
 from json import dumps
-from httplib2 import Http
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -56,10 +55,10 @@ class buscador(View):
             time.sleep(2)
         while self.data_array.status == 'PENDING':
             time.sleep(2)
-        url = 'http://192.168.56.101/datos'
+        url = 'http://172.31.80.103/datos'
         for item in self.expedientes:
             expedientesJson.append(str(item))
-        payload = {'expedientes':json.dumps(expedientesJson), 'array' : self.data_array}
+        payload = {'expedientes':json.dumps(str(expedientesJson)), 'array' : self.data_array}
         while status == 500:
             resultados = requests.get(url, params=payload)
             status=resultados.status_code
