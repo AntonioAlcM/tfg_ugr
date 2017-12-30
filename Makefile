@@ -17,42 +17,42 @@ desplegar_bd:
 		. ./obtenerDNS.sh
 parar_vagrant:
 	vagrant halt
+
 install:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) instalar_dependencias_django
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) instalar_dependencias_backend
-	#fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) test_django
-	#fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) test_backend
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) ejecutar_redis_rabbit
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) ejecutar_django
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) ejecutar_backend
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) instalar_dependencias_django
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) instalar_dependencias_backend
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) ejecutar_redis_rabbit
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) ejecutar_backend
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) test_django
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) test_backend
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) ejecutar_django
 
-
-instalar:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D)instalar_dependencias_django
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) instalar_dependencias_backend
+instalar_dependencias:
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D)instalar_dependencias_django
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) instalar_dependencias_backend
 
 test:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) test_django
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) test_backend
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) test_django
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) test_backend
 
 ejecutar:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) ejecutar_redis_rabbit
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) ejecutar_django
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) ejecutar_backend
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) ejecutar_redis_rabbit
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) ejecutar_django
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) ejecutar_backend
 
 reiniciar_bd:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) reiniciar_redis_rabbit
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) reiniciar_redis_rabbit
 
 parar_bd:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) parar_redis_rabbit
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_R) parar_redis_rabbit
 
-aprovisionar_bd:
+provisionar_bd:
 	vagrant provision bd
-aprovisionar_django:
+provisionar_django:
 	vagrant provision django
-aprovisionar_backend:
+provisionar_backend:
 	vagrant provision backend
-aprovisionar:
+provisionar:
 	vagrant provision
 
 destruir_bd:
@@ -66,5 +66,5 @@ destruir:
 reiniciar:
 	vagrant reload
 parar_aplicacion:
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) parar
-	fab -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) parar
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) parar
+	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) parar
