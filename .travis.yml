@@ -14,6 +14,8 @@ install:
 script:
 #- npm run start
 - python manage.py migrate
+- celery  worker -A celeryconfig -D -Q celery --workdir /backend/
+- celery  worker -A BuscadorBDMedical -Q celery -D 
 - python manage.py test
 
 env:
