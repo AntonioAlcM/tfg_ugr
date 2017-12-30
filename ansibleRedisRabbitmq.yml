@@ -1,0 +1,52 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  vars:
+   token_bot: "{{ lookup('env','token_bot') }}"
+   DATABASE_URL: "{{ lookup('env','DATABASE_URL')}}"
+   redis_port: 6379
+   redis_databases: 0
+  pre_tasks:
+  - name: Instalar python
+    become: yes
+    raw: test -e /usr/bin/python || (apt-get update && apt-get install -y python-minimal)
+  tasks:
+    - name: actualizar update
+      apt: name=apt state=latest
+    - name: Instalar build-essential y tcl8.5
+      apt: name=build-essential state=present
+      apt: name=tcl8.5 state=present
+    - name: Instalar make
+      apt: name=make state=present
+    - name: Instalar wget
+      apt: name=wget state=present
+    - name: Instalar gcc
+      apt: name=gcc state=present
+    - name: Instalar y ejecutar rabbitmq
+      shell: echo "deb http://www.rabbitmq.com/debian/ testing main" >> /etc/apt/sources.list
+      shell: curl http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
+    - name: Instalar rabbitmq
+      apt: name=apt state=latest
+      apt: name=rabbitmq-server state=present
+    - name: Añadir usuario
+      command: rabbitmqctl add_user invitado invitado
+    - name: Dar permisos
+      command: rabbitmqctl set_permissions invitado ".*" ".*" ".*"
+    - name: activar interfaz grafica
+      command: rabbitmq-plugins enable rabbitmq_management
+    - name: Ensure Redis is present
+      apt: pkg=redis-server state=latest
+      sudo: true
+    - name: Ensure Redis is started
+      service: name=redis-server state=started enabled=yes
+      sudo: true
+    - name: Ensure Redis Configuration
+      template: src=/vagrant/conf_redis/redis.conf dest=/etc/redis/redis.conf owner=root group=root mode=0644
+      sudo: true
+      notify: Redis Restart
+  handlers:
+    - name: Redis Restart
+      service: name=redis-server state=restarted enabled=yes
+      sudo: true

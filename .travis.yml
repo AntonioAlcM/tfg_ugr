@@ -14,7 +14,7 @@ install:
 script:
 #- npm run start
 - python manage.py migrate
-- python manage.py test
+
 
 env:
   global:

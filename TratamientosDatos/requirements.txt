@@ -1,0 +1,7 @@
+Flask
+Jinja2
+urllib3
+requests
+celery
+redis
+amqp
