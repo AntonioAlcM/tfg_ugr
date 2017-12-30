@@ -33,6 +33,7 @@ class buscador(View):
             self.data_array = obtenerJson.apply_async(kwargs={'url': self.url_array})
             self.historial_busqueda.append(self.data_ncbi)
             self.historial_busqueda.append(self.data_array)
+
             self.expedientes=self.obtenerExpedientes(self.data_ncbi)
             return render(request,'listarBusqueda.html')
         else:
@@ -51,14 +52,13 @@ class buscador(View):
         lista=[]
         expedientesJson=[]
         status=500
+        print('nbasdnbasnbd')
         while len(self.expedientes) == 0:
             time.sleep(2)
-        while self.data_array.status == 'PENDING':
-            time.sleep(2)
-        url = 'http://172.31.80.103/datos'
+        url = 'http://172.31.80.101/datos'
         for item in self.expedientes:
             expedientesJson.append(str(item))
-        payload = {'expedientes':json.dumps(str(expedientesJson)), 'array' : self.data_array}
+        payload = {'expedientes':json.dumps(expedientesJson), 'array' : self.data_array}
         while status == 500:
             resultados = requests.get(url, params=payload)
             status=resultados.status_code

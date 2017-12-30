@@ -7,7 +7,6 @@
    token_bot: "{{ lookup('env','token_bot') }}"
    DATABASE_URL: "{{ lookup('env','DATABASE_URL')}}"
    redis_port: 6379
-   redis_databases: 0
   pre_tasks:
   - name: Instalar python
     become: yes
@@ -36,17 +35,28 @@
       command: rabbitmqctl set_permissions invitado ".*" ".*" ".*"
     - name: activar interfaz grafica
       command: rabbitmq-plugins enable rabbitmq_management
-    - name: Ensure Redis is present
-      apt: pkg=redis-server state=latest
-      sudo: true
-    - name: Ensure Redis is started
-      service: name=redis-server state=started enabled=yes
-      sudo: true
-    - name: Ensure Redis Configuration
-      template: src=/vagrant/conf_redis/redis.conf dest=/etc/redis/redis.conf owner=root group=root mode=0644
-      sudo: true
-      notify: Redis Restart
-  handlers:
-    - name: Redis Restart
-      service: name=redis-server state=restarted enabled=yes
-      sudo: true
+    - name: Descargar redis
+      command: wget http://download.redis.io/redis-stable.tar.gz
+    - name: Descomprimir redis
+      command: tar xzf redis-stable.tar.gz
+    - name: jmelloc
+      command: make distclean -C ./redis-stable
+    - name: Ejecutar make
+      command: make -C ./redis-stable
+    #- name: Ejecutar test
+    #  shell: make test -C ./redis-stable
+    - name: Instalar
+      command: make install -C ./redis-stable
+    - name: Crear carpeta
+      command: mkdir /etc/redis
+    - name: Ejecutar .sh
+      command: ./redis-stable/utils/install_server.sh
+    - name: copiar redis.conf file
+      command: cp /vagrant/conf_redis/6379.conf /etc/redis
+
+
+    - name: cleaning up build files
+      command: rm -rf ./{{ item }}
+      with_items:
+        - redis-stable
+        - redis-stable.tar.gz

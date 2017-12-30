@@ -1,25 +1,41 @@
 from fabric.api import *
 def instalar_dependencias_django():
-	run('cd /vagrant && sudo pip3 install -r requirements.txt')
+	run('cd /vagrant && sudo  pip3 install -Ur requirements.txt')
 def instalar_dependencias_backend():
-	run('cd /vagrant/backend && sudo pip3 install -r requirements.txt')
+	run('cd /vagrant/backend && sudo pip3 install -Ur requirements.txt')
 def test_django():
-    run('cd /vagrant && python3 manage.py test')
+	run('celery  worker -A BuscadorBDMedical -Q celery -D --workdir /vagrant/ ', pty=False)
+	run('nohup sudo -E  python3 /vagrant/manage.py test', pty=False)
 def test_backend():
-    run('cd /vagrant/backend && python3 test_tratamientoDatos.py')
+	run('celery  worker -A celeryconfig -D -Q celery --workdir /vagrant/backend/' , pty=False)
+	run('python3 /vagrant/backend/test_TratamientoDatos.py ', pty=False)
+
 def ejecutar_django():
-	run('cd /vagrant && python3 manage.py migrate')
-	sudo('cd /vagrant && python3 manage.py runserver 0.0.0.0:80')
-	run('cd /vagrant && python3 celery worker -A BuscadorBDMedical -Q celery')
+	run('python3 /vagrant/manage.py migrate')
+	run('celery  worker -A BuscadorBDMedical -Q celery -D --workdir /vagrant/ ', pty=False)
+	sudo(' screen -d -m python3 /vagrant/manage.py runserver 0.0.0.0:80 ', pty=False)
+
+
 def ejecutar_backend():
-    sudo('cd /vagrant/backend && sudo python3 tratamientoDatos.py')
-    run('cd /vagrant/backend && celery worker -A celeryconfig -Q celery')
+	run('celery  worker -A celeryconfig -D -Q celery --workdir /vagrant/backend/', pty=False)
+	sudo('screen -d -m python3 /vagrant/backend/tratamientoDatos.py', pty=False)
+
+
+
 def ejecutar_redis_rabbit():
-	run('sudo service redis start')
-	run('sudo service rabbitmq-server start')
+	sudo(' service rabbitmq-server start')
+	sudo(' nohup sudo -E  update-rc.d redis_6379 defaults', pty=False)
+	sudo('pkill redis')
+	sudo('screen -d -m   /etc/init.d/redis_6379 start ', pty=False)
+	#redis-server /etc/redis/6379.conf
+
 def reiniciar_redis_rabbit():
-	run('sudo service redis restart')
-	run('sudo service rabbitmq-server restart')
+	sudo(' service rabbitmq-server restart')
+	sudo(' screen -d -m /etc/init.d/redis_6379 restart' , pty=False)
+
 def parar_redis_rabbit():
-	run('sudo service redis stop')
-	run('sudo service rabbitmq-server stop')
+	run(' systemctl stop redis_379')
+	run(' service rabbitmq-server stop')
+
+def parar():
+	sudo('pkill python3')
