@@ -9,8 +9,9 @@ class TestTratamientoDatos(unittest.TestCase):
 		self.url_ncbi = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gds&term=prostata&datetype=edat&retmax=2&usehistory=y&retmode=json'
 		self.url_array = 'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments?assaycount=1&keywords=prostata'
 		self.data_ncbi=tasks.obtenerJson.apply_async(kwargs={'url': self.url_ncbi})
-		self.expedientes=self.obtenerExpedientes(self.data_ncbi)
+		self.expedientes=self.obtenerExpedientes(self.data_ncbi)		
 		self.data_array=tasks.obtenerJson.apply_async(kwargs={'url': self.url_array})
+
 		self.tratamiento=tratamientosDatos(self.expedientes,str(self.data_array))
 	def test_almacenar_datos_visualizacion_array(self):
 		self.assertIsNotNone(self.tratamiento.almacenar_datos_visualizacion_array())

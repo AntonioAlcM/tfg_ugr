@@ -5,10 +5,3 @@ requests
 celery
 redis
 amqp
-celery-with-redis
-kombu
-pip-tools
-click
-anyjson
-six
-pytz
