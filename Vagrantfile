@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.ssh.private_key_path =  File.expand_path('~/github/tfg_ugr/iv.pem')
+
   config.vm.define "django" do |django|
     #django.vm.box = "ubuntu/trusty64"
     #django.vm.network "private_network", ip: "192.168.56.100"
@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
     end
     django.vm.provision "ansible" do |ansible|
       ansible.sudo = true
-      ansible.playbook = "ansibleFrontendBackend.yml"
+      ansible.playbook = "./provision/ansibleFrontendBackend.yml"
       ansible.verbose = "v"
       ansible.host_key_checking = false
     end
@@ -57,7 +57,7 @@ Vagrant.configure(2) do |config|
 
     backend.vm.provision "ansible" do |ansible|
       ansible.sudo = true
-      ansible.playbook = "ansibleFrontendBackend.yml"
+      ansible.playbook = "./provision/ansibleFrontendBackend.yml"
       ansible.verbose = "v"
     end
   end
@@ -80,7 +80,7 @@ Vagrant.configure(2) do |config|
     end
     bd.vm.provision "ansible" do |ansible|
       ansible.sudo = true
-      ansible.playbook = "ansibleRedisRabbitmq.yml"
+      ansible.playbook = "./provision/ansibleRedisRabbitmq.yml"
       ansible.verbose = "v"
     end
   end
