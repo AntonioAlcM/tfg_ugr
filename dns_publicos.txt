@@ -1,3 +1,0 @@
-  HostName ec2-54-236-231-206.compute-1.amazonaws.com
-  HostName ec2-52-91-233-194.compute-1.amazonaws.com
-  HostName ec2-54-161-124-62.compute-1.amazonaws.com
