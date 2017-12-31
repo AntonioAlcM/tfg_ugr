@@ -53,7 +53,6 @@ Vagrant.configure(2) do |config|
       aws.ami = "ami-cd0f5cb6"
       override.ssh.username = "ubuntu"
       override.ssh.private_key_path =  File.expand_path('~/.ssh/clave.pem')
-      override.ssh.private_key_path =  File.expand_path('~/.ssh/iv.pem')
     end
 
     backend.vm.provision "ansible" do |ansible|
