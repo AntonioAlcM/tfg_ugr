@@ -162,4 +162,4 @@ Uso del makefile:
 2. Make install: Hace el despliegue, ejecutando los test e instalando las dependencias
 3. Make provisionar: Provisiona las maquinas
 
-Despliegue final: http://ec2-52-90-176-88.compute-1.amazonaws.com/buscador/
+Despliegue final: http://ec2-52-90-176-88.compute-1.amazonaws.com
