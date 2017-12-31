@@ -96,3 +96,70 @@ Una vez configurado el package.json, vamos a configurar el archivo .travis.yml, 
 	script:
 	- npm run start
 	- etc...
+### Despliegue en AWS
+
+#### Configuración de red y obtención de credenciales
+
+1. Obtención de credenciales para poder conectarnos a aws    
+	* Primero deberemos crear un usuario en el apartado My security Credentials del menú de usuario  
+	*	Una vez creado dicho usuario deberemos pinchar en el submenú Policies, pinchando sobre AdministratorAccess, luego seleccionaremos la pestaña Attached entities, pulsando sobre el botón Attach y seleccionando el usuario recién creado.  
+	* El siguiente paso es  crear las credenciales de seguridad, para ello volveremos al menú de Users, en dicho menu pincharemos sobre el nombre del usuario. Nos aparecerá una nueva ventana, donde pincharemos en security credentials, dentro de security credentials pulsaremos sobre Create acces key, con esto crearemos nuestras credenciales para poder conectarnos a aws desde vagrant
+2. Obtención de las claves ssh  
+	* Para la obtención de las claves ssh, deberemos irnos al servicio denominado EC2, en la página de dicho servicio marcaremos Key Pairs, una vez en la página de Key Pairs aparecerá una nueva ventana, en dicha ventana pincharemos en Create Key Pair, cuando pinchemos nos solicitará un nombre, una vez dado el nombre se creará la clave y el navegador la descargará de forma automática. En nuestro caso ese archivo descargado a sido almacenado en la carpeta .ssh
+3. Apertura de los puertos
+	En el servicio EC2 en el apartado security groups, deberemos abrir los puertos para la conexión ssh y los puertos que puedan necesitar nuestros servicios
+
+#### Creación de los archivos de provisionamiento
+
+Deberemos tener en cuenta que para que ansible se pueda conectar por ssh, deberemos crear un archivo de configuración añadiendo la siguiente línea
+
+		[ssh_connection]
+		control_path=%(directory)s/%%h-%%p-%%r
+Una vez creado el archivo de configuración, deberemos añadir en los playbooks las siguientes líneas
+
+		vars:
+ 			token_bot: "{{ lookup('env','token_bot') }}"
+ 			DATABASE_URL: "{{ lookup('env','DATABASE_URL')}}"
+Una vez añadidas estas líneas en el archivo, ya solo queda rellenar el playbook con las tareas que deseemos que se ejecuten
+
+#### Creación de los archivos de despliegue  
+
+Para hacer el despliegue usaremos fabric python. Los archivos de despliegue se estructura en funciones, donde cada función lanzará, parará o reiniciará un servicio o unos tests o la instalación de los requirements. Dentro de cada función lanzará los programas necesarios para cumplir los objetivos de la función.  
+La ejecución de los comandos que necesiten permisos de root, se ejecutaran con sudo y los que no se ejecutarán con run. Para lanzar los programas en background usaremos
+
+				sudo(' screen -d -m python3 /vagrant/manage.py runserver 0.0.0.0:80 ', pty=False)
+
+#### Creación de las máquinas en vagrant  
+
+En este apartado explicaremos como crearemos una máquina para uno de nuestros servicos, os recordamos que nuestra aplicación se compone de tres servicios, uno que hace frontend, otro que hace de backend y otro servicio que alberga los servidores de redis y rabbitmq.     
+Para crear una máquina  aws en vagrant, debemos instalar vagrant-aws. En este [enlace](https://github.com/mitchellh/vagrant-aws) explica como instalar y configurar la máquina en vagrant.    
+Una vez instalado el plugin, debemos declarar tantas máquinas como vayamos a usar, las máquinas se declaran asi:
+
+				config.vm.define "django" do |django|
+Una vez declaradas crearemos un proveedor dentro de las máquinas que acabamos de definir, en nuestro caso como queremos usar vagrant-aws la declaramos de la siguiente forma:
+
+				django.vm.provider :aws do |aws, override|
+
+Dentro del proveedor configuraremos los parámetros que nosotros deseemos, la tabla de parámetros configurables la podemos ver [aquí](https://github.com/mitchellh/vagrant-aws)
+
+				aws.access_key_id = "access key " creada en el punto 1 del apartado Configuración de red y obtención de credenciales
+				aws.secret_access_key = "access key " creada en el punto 1 del apartado Configuración de red y obtención de credenciales
+				aws.keypair_name = "nombre de la clave ssh que hemos creado en el punto 2 del apartado Configuración de red y obtención de credenciales"
+				aws.subnet_id = "subnet-1fda5b30" Subred que hemos creado
+				aws.private_ip_address="172.31.80.100" Ip dentro de la subred
+				aws.security_groups = ["sg-89b65ffd"] Grupo de seguridad, se crea por defecto
+				aws.region =  "us-east-1" Region que te han asigando
+				aws.instance_type= 't2.micro'
+				aws.ami = "Distribución de so, que deseemos"
+				override.ssh.username = "ubuntu"
+				override.ssh.private_key_path =  path de donde has almacenado la clave ssh  
+
+Como último paso será crear un makefile, que automatice todos los pasos anteriormente comentados
+
+#### Instrucciones de ejecución
+Uso del makefile:
+1. Make desplegar: Despliega la aplicación y la provisionamiento
+2. Make install: Hace el despliegue, ejecutando los test e instalando las dependencias
+3. Make provisionar: Provisiona las maquinas
+
+Despliegue final: http://ec2-52-90-176-88.compute-1.amazonaws.com/buscador/
