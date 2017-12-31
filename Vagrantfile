@@ -18,17 +18,20 @@ Vagrant.configure(2) do |config|
 
     django.vm.box = "dummy"
     django.vm.provider :aws do |aws, override|
-      aws.access_key_id = "iv"
-      aws.secret_access_key = "iv"
-      aws.keypair_name = "iv"
+
+      aws.access_key_id = "key_id"
+      aws.secret_access_key = "id"
+      aws.keypair_name = "infraestructura_virtual"
       aws.subnet_id = "subnet-1fda5b30"
       aws.private_ip_address="172.31.80.100"
-      aws.security_groups = ["iv"]
+      aws.security_groups = ["grupo"]
       aws.region =  "us-east-1"
       aws.instance_type= 't2.micro'
       aws.ami = "ami-cd0f5cb6"
       override.ssh.username = "ubuntu"
+
       override.ssh.private_key_path =  File.expand_path('iv.pem')
+
     end
     django.vm.provision "ansible" do |ansible|
       ansible.sudo = true
@@ -42,6 +45,7 @@ Vagrant.configure(2) do |config|
     #backend.vm.network "private_network", ip: "192.168.56.101"
     backend.vm.box = "dummy"
     backend.vm.provider :aws do |aws, override|
+
       aws.access_key_id = "iv"
       aws.secret_access_key = "iv"
       aws.keypair_name = "iv"
@@ -53,6 +57,7 @@ Vagrant.configure(2) do |config|
       aws.ami = "ami-cd0f5cb6"
       override.ssh.username = "ubuntu"
       override.ssh.private_key_path =  File.expand_path('iv.pem')
+
     end
 
     backend.vm.provision "ansible" do |ansible|
@@ -66,17 +71,21 @@ Vagrant.configure(2) do |config|
     #bd.vm.network "private_network", ip: "192.168.56.102"
     bd.vm.box = "dummy"
     bd.vm.provider :aws do |aws, override|
+
       aws.access_key_id = "iv"
       aws.secret_access_key = "iv"
       aws.keypair_name = "iv"
       aws.subnet_id = "subnet-1fda5b30"
       aws.private_ip_address="172.31.80.100"
       aws.security_groups = ["iv"]
+
       aws.region =  "us-east-1"
       aws.instance_type= 't2.micro'
       aws.ami = "ami-cd0f5cb6"
       override.ssh.username = "ubuntu"
       override.ssh.private_key_path =  File.expand_path('iv.pem')
+      override.ssh.private_key_path =  File.expand_path('~/.ssh/clave.pem')
+
     end
     bd.vm.provision "ansible" do |ansible|
       ansible.sudo = true
