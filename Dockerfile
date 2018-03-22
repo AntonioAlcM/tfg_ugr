@@ -17,15 +17,11 @@ RUN ./redis-stable/utils/install_server.sh
 RUN cp conf_redis/6379.conf etc/redis/
 RUN touch var/lib/redis/6379
 RUN touch var/log/redis_6379.log
-# Instalación de git y clonado del proyecto
-
-
 
 # Instalación de las dependecncias del proyecto
 
 RUN pip3 install -r requirements.txt
 
-RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
-RUN apt-get install -y rabbitmq-server
+
 EXPOSE 80
-CMD python3 manage.py migrate &&(update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && service rabbitmq-server start && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info
+CMD python3 manage.py migrate && python3 manage.py collectstatic &&(update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info

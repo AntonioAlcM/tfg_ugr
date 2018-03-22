@@ -1,0 +1,267 @@
+
+{% extends "index.html" %}
+
+{% load staticfiles %}
+{% load static %}
+{% load i18n %}
+
+{% block contenido %}
+<link rel="stylesheet" href="{% static 'stylesearch.css' %}">
+
+<script>
+	var datos_recibidos;
+	var n_muestras=20;
+	var description_text;
+	/*llamar_ajax();*/
+	function llamar_ajax(){
+		var url =  "{% url 'recibirDatos' %}";
+	 $.ajax({
+		 url: url,
+		 type: 'GET',
+		 dataType : 'json',
+		 success: function(datos) {
+			 datos_recibidos=datos;
+			 Visualiza_filas (0 , n_muestras);
+		 },
+		 failure: function(datos) {
+			 alert('esto no vá');
+		 }
+	 });
+ };
+	 function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+};
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+function Visualiza_filas (inicio, fin) {
+		 $(function () {
+					var content = '';
+					var ul='';
+					//content += '<tbody>'; -- **superfluous**finf
+						for (var index = inicio; (index < datos_recibidos.length) && (index < fin) ; index++) {
+					content += '<tr>'
+					content += '<td id=celda>'+datos_recibidos[index]['accession'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['name'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['muestras'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['releasedate'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['especie'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['tipoexperimento'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['description'];
+		content+='</td>';
+					content += '<td>'+datos_recibidos[index]['bd'];
+		content+='</td>';
+					content += '<td> <a id="enlace" onclick="descarga('+index+')">'
+		content+='<img class="center-block" src="{% static "carpeta.png" %}">'
+		content+='</a>';
+		content+='</td>';
+					content += '</tr>';
+						}
+					$("#acrylic tbody").html(content);
+		 });
+
+
+	};
+	 function enviarFTP(){
+		 enlace=document.getElementById("enlace").text;
+		 /*var url =
+		 $.ajax({
+    // la URL para la petición
+    url : url,
+    data : { enlace : enlace },
+    type : 'POST',
+    dataType : 'json',
+    success : function(json) {
+        alert("comenzando la descarga")
+    },
+
+    error : function(xhr, status) {
+        alert('No se pudo establecer conexión');
+    }
+});*/
+};
+$(document).ready(function(){
+
+  $('#myTable').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:4});
+
+});
+
+		function paginador(fila_inicio){
+				Visualiza_filas(fila_inicio, fila_inicio+n_muestras);
+		};
+		function abrirCarpetaDescarga(){
+	 			enlace=document.getElementById("enlace").text;
+				windows.open(enlace, '_blank');
+		};
+		function descarga(enlace){
+			window.open(enlace);
+		};
+		function descriptionText(text){
+			description_text=text;
+		};
+		$(document).ready(function() {
+
+			$('tbody tr #description ').click(
+
+				function(e)
+				{
+		$("#myModal").modal();//llamamos a la clase modal
+		$(".modal-body p").empty();//Vacia el contenido de p
+		$(".modal-body p").append(description_text);//rellenamos el parrafo
+
+				});
+				});
+	</script>
+<body>
+
+<div class="container">
+
+	<form role="form" action="{% url 'buscarDatos' %}" method="post" >
+		{% csrf_token %}
+	<div class="col-sm-9 col-sm-offset-3 col-md-4 col-md-offset-8 row" style="margin-top:10px;">
+					<div class="input-group">
+							<input type="text" class="  search-query form-control" name="search" id="search" placeholder="Buscar" />
+							<span class="input-group-btn">
+									<button class="btn btn-danger" type="submit">
+											<span class=" glyphicon glyphicon-search"></span>
+									</button>
+							</span>
+					</div>
+
+	</div>
+	</form>
+
+<div class=" main" style="width:auto">
+
+			<h1 class="page-header">Experimentos</h1>
+			<div class="panel-body">
+				<table class="table table-striped table-bordered table-list table-responsive" id="acrylic">
+					<thead>
+						<tr>
+							<th >ID</th>
+							<th >Series ID</th>
+							<th >Name</th>
+							<th >Samples</th>
+							<th >Release Date</th>
+							<th >Species</th>
+							<th >Type of experiment</th>
+							<th >Description</th>
+							<th >DataBase</th>
+							<th >Download</th>
+						</tr>
+					</thead>
+
+					{% if contacts.has_other_pages %}
+  <ul class="pagination">
+    {% if contacts.has_previous %}
+      <li><a href="?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in contacts.paginator.page_range %}
+      {% if contacts.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if contacts.has_next %}
+      <li><a href="?page={{ contacts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+					<tbody>
+						{% for i in contacts %}
+		 <tr>
+			 <td>{{i.id }}</td>
+			 <td>{{i.accession }}</td>
+			 <td>{{i.name }}</td>
+			 <td>{{i.muestras }}</td>
+			 <td>{{i.releasedate }}</td>
+			 <td>{{i.especie }}</td>
+			 <td>{{i.tipoexperimento }}</td>
+			 <td id=description onclick="descriptionText('{{i.description }}')">Click to see the description</td>
+			 <td>{{i.bd }}</td>
+			 <td><a id="enlace" onclick="descarga('{{i.descarga }}')">
+				 <img class="center-block" src="{% static "carpeta.png" %}"></a></td>
+		 </tr>
+		 <!-- Modal -->
+		 <div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Description</h4>
+								</div>
+								<div class="modal-body">
+									<p></p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+					</div>
+
+				</div>
+			</div>
+{% endfor %}
+
+
+								</tbody>
+
+							</table>
+							{% if contacts.has_other_pages %}
+		  <ul class="pagination">
+		    {% if contacts.has_previous %}
+		      <li><a href="?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span>&laquo;</span></li>
+		    {% endif %}
+		    {% for i in contacts.paginator.page_range %}
+		      {% if contacts.number == i %}
+		        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li><a href="?page={{ i }}">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+		    {% if contacts.has_next %}
+		      <li><a href="?page={{ contacts.next_page_number }}">&raquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span>&raquo;</span></li>
+		    {% endif %}
+		  </ul>
+		{% endif %}
+						</div>
+					</div>
+					</div>
+</body>
+{% endblock %}

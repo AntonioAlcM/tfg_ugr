@@ -20,5 +20,4 @@ from Buscador import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^buscador/', include('Buscador.urls')),
-    url(r'^status/$', views.devuelve_status, name='status'),
 ]

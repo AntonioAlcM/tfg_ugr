@@ -18,6 +18,8 @@ desplegar_bd:
 parar_vagrant:
 	vagrant halt
 
+worker:
+	fab -f ./despliegue/fabWorker.py -a ejecutar_worker
 install:
 	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_D) instalar_dependencias_django
 	fab -f ./despliegue/fabfile.py -i ~/.ssh/iv.pem -H ubuntu@$(DNS_B) instalar_dependencias_backend

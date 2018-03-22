@@ -9,7 +9,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-
 	<title>
 		Buscador
 	</title>
@@ -19,17 +18,22 @@
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="//https://maxcdn.bootstrapcdn.commaxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//https://maxcdn.bootstrapcdn.commaxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//https://maxcdn.bootstrapcdn.comcdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 
-{% block contenido %}
+
 <body>
+	{% block contenido %}
 	<div class="container" style="margin-top: 5%;">
 	    <div class="col-md-6 col-md-offset-3">
-
-	        <!-- Search Form -->
+				{% block mensaje %}
+				{% endblock %}
+					{% block search %}
 	        <form role="form" action="{% url 'buscarDatos' %}" method="post" >
 	        {% csrf_token %}
-	        <!-- Search Field -->
 	            <div class="row">
 	                <h1 class="text-center">Buscador médico</h1>
 	                <div class="form-group">
@@ -44,9 +48,10 @@
 	            </div>
 
 	        </form>
-	        <!-- End of Search Form -->
-{% endblock %}
+					{% endblock %}
 	    </div>
 	</div>
+	{% endblock %}
 </body>
+
 </html>

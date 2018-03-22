@@ -1,0 +1,22 @@
+
+{% load staticfiles %}
+{% load static %}
+{% load i18n %}
+
+{% block contenido %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<body>
+<div class="container">
+	<div class="ring">
+		Searching
+		<span></span>
+	</div>
+</div>
+</body>
+
+<script>
+window.location ="{% url 'cargarPaginaBusqueda' %}"
+</script>
+
+{% endblock %}
