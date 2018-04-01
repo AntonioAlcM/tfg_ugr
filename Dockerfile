@@ -28,4 +28,4 @@ CMD wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key
 CMD apt-get install -y rabbitmq-server
 
 EXPOSE 80
-CMD python3 manage.py migrate && python3 manage.py collectstatic && (update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && service rabbitmq-server start && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info
+CMD python3 manage.py migrate && python3 manage.py collectstatic --noinput && (update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && service rabbitmq-server start && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info
