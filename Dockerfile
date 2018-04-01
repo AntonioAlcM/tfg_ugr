@@ -2,7 +2,7 @@ FROM python:3
 # Autor
 MAINTAINER Antonio Alcalá Martínez
 
-RUN apt-get update
+CMD apt-get update
 CMD apt-get install -y python-celery
 CMD apt-get install -y python3-celery
 CMD apt-get install -y build-essential tcl
@@ -24,7 +24,7 @@ COPY ./conf_redis/6379.conf /etc/redis
 
 RUN pip3 install -r requirements.txt
 
-RUN wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
+CMD wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
 CMD apt-get install -y rabbitmq-server
 
 EXPOSE 80
