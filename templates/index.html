@@ -12,29 +12,54 @@
 	<title>
 		Buscador
 	</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<script
-  src="http://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link href="//https://maxcdn.bootstrapcdn.commaxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-	<script src="//https://maxcdn.bootstrapcdn.commaxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="//https://maxcdn.bootstrapcdn.comcdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	src="http://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	</head>
+<style>
+body{
+height:auto;
+margin: 0;
+padding: 0;
+width:auto;
+font-weight: normal;
+line-height: 1.5;
 
-</head>
+}
+</style>
+<script>
+function buscarGSE() {
+  // Get the checkbox
+  var checkBox = document.getElementById("GSE");
+	var content=""
+  // Get the output text
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+		document.forms.formulario.action="{% url 'buscarDatosGSE' %}"
+  }else{
+		document.forms.formulario.action="{% url 'buscarDatos' %}"
+	}
+}
+</script>
+
 
 
 <body>
 	{% block contenido %}
-	<div class="container" style="margin-top: 5%;">
-	    <div class="col-md-6 col-md-offset-3">
+	<div class="container " style="margin-top: 5%;">
+	    <div   >
 				{% block mensaje %}
 				{% endblock %}
 					{% block search %}
-	        <form role="form" action="{% url 'buscarDatos' %}" method="post" >
+	        <form role="form " id=formulario action="{% url 'buscarDatos' %}" method="post" >
 	        {% csrf_token %}
-	            <div class="row">
+	            <div class="col-md-8 container-fluid">
 	                <h1 class="text-center">Buscador médico</h1>
 	                <div class="form-group">
 	                    <div class="input-group">
@@ -45,6 +70,9 @@
 	                        </span>
 	                    </div>
 	                </div>
+									<div class="checkbox">
+				 							<label><input type="checkbox" id="GSE"  onclick="buscarGSE()">Activate GSE</label>
+			 						</div>
 	            </div>
 
 	        </form>

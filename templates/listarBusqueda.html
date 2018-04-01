@@ -6,56 +6,88 @@
 {% load i18n %}
 
 {% block contenido %}
-<link rel="stylesheet" href="{% static 'stylesearch.css' %}">
-	 <script src="{% static 'function.js' %}"></script>
-	 <script>
-	   llamar_ajax();
-	 function llamar_ajax(){
-	   var url =  "{% url 'recibirDatos' %}";
-	  $.ajax({
-	    url: url,
-	    type: 'GET',
-	    dataType : 'json',
-	    success: function(datos) {
-	      var tam=datos.length;
-	 		  setVariables(datos,tam);
-	      visualiza_filas (0 , n_muestras);
-	      paginatorBar(1,5,tam);
+<style>
 
-	    },
-	    failure: function(datos) {
-	      alert('esto no vá');
-	    }
-	  });
-	 };
+</style>
+	 <script src="{% static 'function.js' %}"></script>
+	 <script >
+		mostrarResultados({{coincidencias|safe }})
 	 </script>
 <body>
 
 <div class="container">
 
 
-
-<div class=" main" style="width:auto">
-	<form role="form" action="{% url 'buscarDatos' %}" method="post" >
+<nav  class="navbar navbar-expand-lg bg-white ">
+	<div class="navbar-header col-lg-8">
+		 <h1>Experiments</h1>
+	 </div>
+	<form class="form-inline my-2 my-lg-0" role="form" action="{% url 'buscarDatos' %}" method="post">
 		{% csrf_token %}
-	<div class="col-sm-9 col-sm-offset-3 col-md-4 col-md-offset-8 row" style="margin-top:10px;">
-					<div class="input-group">
-							<input type="text" class="  search-query form-control" name="search" id="search" placeholder="Search" />
-							<span class="input-group-btn">
-									<button class="btn btn-danger" type="submit">
-											<span class=" glyphicon glyphicon-search"></span>
-									</button>
-							</span>
-					</div>
-
-	</div>
+							<input type="text" class="form-control col" name="search" id="search" placeholder="Search" >
+									 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 	</form>
-			<h1 class="page-header">Experiments</h1>
-			<div class="panel-body">
-				<table class="table table-striped table-bordered table-list table-responsive" id="acrylic">
+</nav>
+	<table >
+    <tbody>
+			<tr>
+<!-- Mostrar resultados en función de la bd -->
+				<td class="col-8" style="padding-top:1.8%">
+					<nav aria-label="Page navigation " id="paginator1"  >
+							<ul class="pagination justify-content-center"></ul>
+					</nav>
+				</td>
+				<!-- Contador de resultados -->
+			<td >
+				<div class="col-lg">
+						<label >Ncbi results</label> <!-- purely semantic -->
+						<div class="form-control input-sm center merge-bottom-input" name="first">{{total_casos_ncbi|safe}}</div>
+				</div> <!-- end column -->
+			</td >
+			<td >
+				<div class="col-lg">
+					<label>Arrayexpress results</label> <!-- purely semantic -->
+					<div class="form-control input-sm center merge-bottom-input" name="first">{{total_casos_array|safe}}</div>
+				</div> <!-- end column -->
+			</td >
+				<td >
+					<div class="dropdown col-lg">
+					  <button class="btn btn-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    Select Data Base
+						</button>
+					  <div class="dropdown-menu ">
+					    <a class="dropdown-item" onclick="orbenarPorBD('ncbi_gds')">Ncbi</a>
+					    <a class="dropdown-item" onclick="orbenarPorBD('arrayexpress')">Arrayexpress</a>
+							<a class="dropdown-item" onclick="orbenarPorBD('none')">All</a>
+					  </div>
+					</div>
+				</td >
+					<td >
+						<div class="dropdown col-lg">
+								<!-- Menú para ordenar -->
+								<div class="btn-group">
+									 <button class="btn btn-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 Order by</button>
+						        <div class="dropdown-menu">
+						            <a class="dropdown-item"  onclick="orderByDate('ascending')">ascending date </a></li>
+												<a class="dropdown-item" onclick="orderByDate('descending')">descending date </a></li>
+						            <a class="dropdown-item" onclick="orderByTecnology()">Technology </a></li>
+						            <a class="dropdown-item" onclick="orderBySpecie()">Specie</a>
+						        </div>
+						    </div>
+
+						</div>
+				</td >
+
+			</tr>
+    </tbody>
+	</table >
+
+		<div class="panel-body table-responsive" >
+				<table class="table-bordered table-list" id="acrylic" style="text-align: left;">
 					<thead>
-						<tr>
-							<th >Identificador</th>
+						<tr class="bg-dark" style="color:white">
+							<!--<th >Identificador</th>-->
 							<th >Series ID</th>
 							<th >Name</th>
 							<th >Samples</th>
@@ -67,47 +99,39 @@
 							<th >Download</th>
 						</tr>
 					</thead>
-
-<nav aria-label="Page navigation" id="paginator1">
-  <ul class="pager">
-
-  </ul>
-
-
-
-</nav>
-
 					<tbody>
+						<div class="modal fade" id="myModal">
+						 <div class="modal-dialog modal-lg modal-dialog-centered">
+							 <!-- Modal content-->
+										 <div class="modal-content">
+											 <div class="modal-header">
 
+												 <h4 class="modal-title">Description</h4>
+												 <button type="button" class="close" data-dismiss="modal">&times;</button>
+											 </div>
+											 <div class="modal-body">
+												 <p></p>
+											 </div>
+											 <div class="modal-footer">
+												 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											 </div>
+								 </div>
 
-		 <!-- Modal -->
-		 <div class="modal fade" id="myModal" role="dialog">
-			<div class="modal-dialog">
-				<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">Description</h4>
-								</div>
-								<div class="modal-body">
-									<p></p>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-					</div>
+							 </div>
+						 </div>
+					</tbody>
 
-				</div>
-			</div>
+				</table>
+				<nav aria-label="Page navigation " id="paginator1" style="margin-top:2%">
+						<ul class="pagination justify-content-center"></ul>
+				</nav>
+		</div>
+						<!-- Modal -->
 
-
-
-								</tbody>
-
-							</table>
-
-						</div>
-					</div>
 					</div>
 </body>
+
+<form  style="display: none;" name="formularioExpediente" role="form" action="{% url 'seeExpedient' %}" method="post" target="_blank" >{% csrf_token %}
+	<input id=myInput type="text" name="myInput" value="">
+</form>
 {% endblock %}

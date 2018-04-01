@@ -1,11 +1,12 @@
 from django.conf.urls import url
 from . import views
-from .views import buscador
-busca=buscador()
+
+from .views import inicializarBuscador,inicializarBuscadorGSE
 urlpatterns = [
-  url(r'^$', views.index, name='index'),
-   url(r'^busqueda/$', busca.buscar, name='buscarDatos'),
-    url(r'^recibirDatos/$', busca.enviarDatos, name='recibirDatos'),
-    #url(r'^descargaFTP/$', views.descargaDeContenido().enlacesFTP, name='enlacesFTP'),
-    url(r'^cargarPaginaBusqueda/$', busca.cargarPaginaBusqueda, name='cargarPaginaBusqueda'),
+url(r'^$', views.index, name='index'),
+  url(r'^busqueda/$', inicializarBuscador, name='buscarDatos'),
+   url(r'^busquedaGSE/$', inicializarBuscadorGSE, name='buscarDatosGSE'),
+   #url(r'^descargaFTP/$', views.descargaDeContenido, name='descargaFTP'),
+   url(r'^results/$', views.cargarPaginaBusqueda, name='cargarPaginaBusqueda'),
+   url(r'^expedient/$', views.sendFile, name='seeExpedient'),
   ]

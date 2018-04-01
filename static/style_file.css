@@ -1,0 +1,33 @@
+
+body {
+    margin:0;
+    padding:0;
+    font-family:verdana;
+
+
+}
+ th{
+   border-color: #212F3D
+   color: #212F3D;
+   background-color: #D6EAF8;
+   text-align:inherit;
+
+ }
+td{
+  background-color: #EBF5FB ;
+  text-align: justify;
+}
+#table{
+  border-color: #212F3D;
+  border-width: 2px;
+}
+.card-header{
+  background-color: #D6EAF8;
+  font-weight:bold;
+  font-family:verdana;
+}
+.card-body{
+    background-color:#EBF5FB;
+    font-family:verdana;
+    text-align: justify;
+}

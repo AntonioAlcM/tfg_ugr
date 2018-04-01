@@ -1,0 +1,158 @@
+
+{% extends "index.html" %}
+
+{% load staticfiles %}
+{% load static %}
+{% load i18n %}
+
+{% block contenido %}
+
+<link rel="stylesheet" href="{% static 'style_file.css' %}">
+<script src="{% static 'function.js' %}"></script>
+<script>
+window.onload=function orderBySamples(){
+  var datos=[]
+  var content=""
+  if("{{file.bd|safe}}" == 'ncbi_gds' ){
+
+        datos={{file.samples|safe}}
+        if(!(datos=="")){
+        datos.sort(function(a, b){
+              var x = a.toString().toLowerCase();
+              var y = b.toString().toLowerCase();
+              if (x < y) {return -1;}
+              if (x > y) {return 1;}
+              return 0;
+          });
+         $(function () {
+           content+='<thead><tr><th>Accesion</th><th>Title</th><th>View file</th></tr></thead>'
+           content += '<tbody><tr>'
+        for(var i=0; i<datos.length;i++){
+          content+='<td>'+ datos[i]['accession']+'</td>'
+          content+='<td>'+datos[i]['title']+'</td>'
+        content += '<td><a id='+ datos[i]['accession']+' onclick="openSample(this)">'
+        content += '<img src="/static/carpeta.png">'
+      content += '</a></td></tr></tbody>'
+            }
+          $("#table_samples").html(content);
+             });
+           }else{
+             content+='<p>There are no samples</p'
+             $("#table_samples").html(content);
+           }
+     }else{
+        {% if 'file' in  file.samples|safe %}
+        $(function () {
+          content+='<thead><tr><th>Assay</th><th>File</th></tr></thead>'
+          content += '<tbody><tr>'
+        {%for i in  file.samples%}
+          content+='<td>'+ "{{i.assay.name|safe}}</td>"
+          content+='<td><a id={{i.file.0.url|safe}} onclick="abrirCarpetaDescarga(this)">'
+          content += '<img  src="/static/download.png">'
+        content += '</a></td></tr></tbody>'
+        {%endfor%}
+        $("#table_samples").html(content);
+           });
+       {%else%}
+       $(function () {
+         content+='<thead><tr><th>Assay</th></tr></thead>'
+         content += '<tbody><tr>'
+       {%for i in  file.samples%}
+         content+='<td>'+ "{{i.assay.name|safe}}"+'</td></tr></tbody>'
+       {%endfor%}
+       $("#table_samples").html(content);
+          });
+      {% endif %}
+     }
+};
+
+function openSample(elem){
+  accession=elem.id;
+  window.open('https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc='+accession);
+}
+</script>
+
+
+
+<div class="container">
+  <nav class="navbar navbar-nav navbar-dark" style="background-color:#1B4F72; color:white; ">
+    <h2 >{{file.accession}}</h2>
+  </nav>
+<div class="row" style="padding-top:2%; padding-left:1.2%;">
+<table class="table table-hover col-md-9 " style="border-color:#212F3D;" >
+  <tbody >
+    <tr>
+  <tr>
+    <th>Title:</th>
+    <td>{{file.name}}</td>
+  </tr>
+  <tr>
+    <th>Identifier:</th>
+    <td >{{file.id}}</td>
+  </tr>
+<tr>
+  <th>Date:</th>
+  <td>{{file.releasedate}}</td>
+</tr>
+<tr>
+<th>Samples:<td>{{file.n_samples}}</td></th>
+</tr>
+<tr>
+<th >Specie:<td>{{file.especie}}</td></th>
+</tr>
+<tr>
+  <th>Type of experiment:</th>
+  <td>{{file.tipoexperimento}}</td>
+</tr>
+<tr>
+  <th>Genome:</th>
+  <td>MAs adelante</td>
+</tr>
+</tr>
+<th style="vertical-align: middle;">
+        Description:
+</th>
+  <td>
+  <div class="item-desc">
+      <p >{{file.description}}</p>
+  </div>
+</td>
+</td>
+</tr>
+<tbody>
+</table>
+<nav class="col-md-3" style="padding-top:5% float:right">
+  <div class="card" >
+    <div class="card-header">
+        Download files
+    </div>
+    <div class="card-body">
+        <ul class="list-group" style="padding-left:5%;">
+          <a id={{file.descarga}} onclick="abrirCarpetaDescarga(this)">
+          <img style="float:left; position:relative; left:30%"  src="/static/descarga.png">
+        </a>
+        </ul>
+    </div>
+  </div>
+</nav>
+
+</div>
+
+<nav style="padding-top:2%">
+  <div class="card">
+    <div class="card-header" >
+        Samples
+    </div>
+    <div class="card-body" >
+  <div class="item-desc">
+    <table class="table"  id="table_samples"  style="padding-left:5%;">
+    </table>
+    </div>
+    </div>
+    </nav>
+
+
+
+</div>
+
+{% endblock %}

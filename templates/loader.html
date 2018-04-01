@@ -4,19 +4,42 @@
 {% load i18n %}
 
 {% block contenido %}
+
 <link rel="stylesheet" href="{% static 'style.css' %}">
+	<script src="//https://maxcdn.bootstrapcdn.comcdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="http://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+<script src="{% static 'function.js' %}"></script>
+<script>
+
+window.onload=function(){
+	var enlaces=[
+						{% for i in enlaces_busqueda %}
+						"{{i}}",
+						{% endfor %}
+					];
+					var data= JSON.stringify({'ncbi':enlaces[0],'array':enlaces[1]})
+		document.getElementById("myInput").value = data;
+		document.forms["formulario"].submit();
+    }
+</script>
 
 <body>
 <div class="container">
 	<div class="ring">
+
+		<form  style="display: none;" name="formulario" role="form" action="{% url 'cargarPaginaBusqueda' %}" method="post" >{% csrf_token %}
+			<input id=myInput type="text" name="myInput" value="">
+
+		</form>
 		Searching
 		<span></span>
 	</div>
 </div>
 </body>
 
-<script>
-window.location ="{% url 'cargarPaginaBusqueda' %}"
-</script>
+
 
 {% endblock %}
