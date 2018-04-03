@@ -60,10 +60,10 @@ function buscarGSE() {
 	        <form role="form " id=formulario action="{% url 'buscarDatos' %}" method="post" >
 	        {% csrf_token %}
 	            <div class="col-md-8 container-fluid">
-	                <h1 class="text-center">Buscador médico</h1>
+	                <h1 class="text-center">Genome BrowSeq</h1>
 	                <div class="form-group">
 	                    <div class="input-group">
-	                        <input class="form-control" type="text" name="search" id="search" placeholder="Buscar" required/>
+	                        <input class="form-control" type="text" name="search" id="search" placeholder="Search" required/>
 	                        <span class="input-group-btn">
 	                            <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"><span style="margin-left:10px;">Search</span></button>
 	                        </span>
