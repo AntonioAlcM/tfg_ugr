@@ -2,7 +2,8 @@ FROM python:3
 # Autor
 MAINTAINER Antonio Alcalá Martínez
 
-CMD apt-get update
+CMD apt-get update -y
+CMD apt-get upgrade -y
 CMD apt-get install -y python-celery
 CMD apt-get install -y python3-celery
 CMD apt-get install -y build-essential tcl
@@ -24,8 +25,6 @@ COPY ./conf_redis/6379.conf /etc/redis
 
 RUN pip3 install -r requirements.txt
 
-CMD wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
-CMD apt-get install -y rabbitmq-server
 
 EXPOSE 80
-CMD python3 manage.py migrate && python3 manage.py collectstatic --noinput && (update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && service rabbitmq-server start && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info
+CMD python3 manage.py migrate && python3 manage.py collectstatic --noinput && (update-rc.d redis_6379 defaults &)  && (/etc/init.d/redis_6379 start  &) && (python3 manage.py runserver 0.0.0.0:80 &) && export C_FORCE_ROOT="true"  &&  celery -A BuscadorBDMedical worker -l info

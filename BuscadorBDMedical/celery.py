@@ -6,7 +6,7 @@ from datetime import timedelta
 from kombu import Exchange, Queue, binding
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BuscadorBDMedical.settings')
-app = Celery('BuscadorBDMedical', backend='redis://localhost:6379/0', broker='amqp://invitado:invitado@localhost//')
+app = Celery('BuscadorBDMedical', backend='redis://localhost:6379/0', broker='redis://localhost:6379/0')
 
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

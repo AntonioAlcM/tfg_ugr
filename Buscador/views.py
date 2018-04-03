@@ -24,7 +24,7 @@ def cargarPaginaBusqueda(request):
     informacion = tratamientosDatos(expedientes,array)
     lista=[]
     lista=informacion.unirVectores()
-    context=Context({"coincidencias":json.dumps(lista),"total_casos_ncbi":ncbi.get()['esearchresult']['retmax'],"total_casos_array":array.get()['experiments']['total']})
+    context={"coincidencias":json.dumps(lista),"total_casos_ncbi":ncbi.get()['esearchresult']['retmax'],"total_casos_array":array.get()['experiments']['total']}
     return render(request,'listarBusqueda.html', context)
 
 class Buscador(object):
@@ -153,7 +153,7 @@ def inicializarBuscador(request):
         if data_ncbi.get()['esearchresult']['retmax'] == '0' and cnt == 2:
             return render(request,'NoResults.html')
         else:
-            context=Context({"enlaces_busqueda":[data_ncbi,data_array]})
+            context={"enlaces_busqueda":[data_ncbi,data_array]}
             return render(request,'loader.html', context)
     else:
         return render(request,'index.html')
@@ -174,7 +174,7 @@ def inicializarBuscadorGSE(request):
         if data_ncbi.get()['esearchresult']['retmax'] == '0' and cnt == 2:
             return render(request,'NoResults.html')
         else:
-            context=Context({"enlaces_busqueda":[data_ncbi,data_array]})
+            context={"enlaces_busqueda":[data_ncbi,data_array]}
             return render(request,'loader.html', context)
     else:
         return render(request,'index.html')
@@ -186,10 +186,10 @@ def sendFile(request):
         muestras=obtenerJsonArray.apply_async(kwargs={'url':'https://www.ebi.ac.uk/arrayexpress/json/v3/experiments/{}/samples/'.format(searched_file['accession'])})
         searched_file['file'].update({'samples':muestras.get()['experiment']['sample']})
         searched_file['file'].update({'n_samples':len(muestras.get()['experiment']['sample'])})
-        context=Context({"file":searched_file['file']})
+        context={"file":searched_file['file']}
         return render(request,'expedient.html', context)
     else:
-        context=Context({"file":searched_file['file']})
+        context={"file":searched_file['file']}
         return render(request,'expedient.html', context)
 
 def index(request):
