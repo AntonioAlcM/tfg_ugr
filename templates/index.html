@@ -1,7 +1,4 @@
-
-{% load staticfiles %}
-{% load static %}
-{% load i18n %}
+ {% load staticfiles %} {% load static %} {% load i18n %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,74 +9,84 @@
 	<title>
 		Buscador
 	</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script
-	src="http://code.jquery.com/jquery-3.2.1.min.js"
-	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	crossorigin="anonymous"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	    crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	</head>
-<style>
-body{
-height:auto;
-margin: 0;
-padding: 0;
-width:auto;
-font-weight: normal;
-line-height: 1.5;
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js" integrity="sha384-lZmvU/TzxoIQIOD9yQDEpvxp6wEU32Fy0ckUgOH4EIlMOCdR823rg4+3gWRwnX1M" crossorigin="anonymous"></script>
+</head>
+<link rel="stylesheet" href="{% static 'styles_index.css' %}">
 
-}
-</style>
 <script>
-function buscarGSE() {
-  // Get the checkbox
-  var checkBox = document.getElementById("GSE");
-	var content=""
-  // Get the output text
+	function buscarGSE() {
+		// Get the checkbox
+		var checkBox = document.getElementById("GSE");
+		var content = ""
+		// Get the output text
 
-  // If the checkbox is checked, display the output text
-  if (checkBox.checked == true){
-		document.forms.formulario.action="{% url 'buscarDatosGSE' %}"
-  }else{
-		document.forms.formulario.action="{% url 'buscarDatos' %}"
+		// If the checkbox is checked, display the output text
+		if (checkBox.checked == true) {
+			document.forms.formulario.action = "{% url 'buscarDatosGSE' %}"
+		} else {
+			document.forms.formulario.action = "{% url 'buscarDatos' %}"
+		}
 	}
-}
 </script>
 
 
 
 <body>
-	{% block contenido %}
-	<div class="container " style="margin-top: 5%;">
-	    <div   >
-				{% block mensaje %}
-				{% endblock %}
-					{% block search %}
-	        <form role="form " id=formulario action="{% url 'buscarDatos' %}" method="post" >
-	        {% csrf_token %}
-	            <div class="col-md-8 container-fluid">
-	                <h1 class="text-center">Genome BrowSeq</h1>
-	                <div class="form-group">
-	                    <div class="input-group">
-	                        <input class="form-control" type="text" name="search" id="search" placeholder="Search" required/>
-	                        <span class="input-group-btn">
-	                            <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"><span style="margin-left:10px;">Search</span></button>
-	                        </span>
-	                        </span>
-	                    </div>
-	                </div>
-									<div class="checkbox">
-				 							<label><input type="checkbox" id="GSE"  onclick="buscarGSE()">Activate GSE</label>
-			 						</div>
-	            </div>
+		<div  id="cabecera" >
+				<div class="row" style="padding-top: 2%;">
+					<div class="col-md-8" style="padding-left: 3%;">
+							<a href="http://www.ugr.es" id="enlace_ugr" target="_blank" >{% block logo %}<img class="center-block" style="width: 28%;" src="{% static "UGR.png" %} ">{% endblock %}</a>
+					</div >
+					<div class="col-md-4" style="padding-right: 10%">
+							<a href="http://atc.ugr.es"  target="_blank"><img src="{% static "logo_atc.gif" %}" style="width: 23%; float: right; "></a>
+							<a href="http://etsiit.ugr.es" target="_blank"><img src="{% static "logo_etsiit.png" %}" style="width:20%; float: right; "></a>
+					</div>
+					
+				</div>
+			</div>
+	
+	<div class="container h-100" >
+			{% block contenido %}
+		<div class=" justify-content-center align-self-center">
+			{% block mensaje %} {% endblock %} {% block search %}
+			<form role="form " id=formulario action="{% url 'buscarDatos' %}" method="post">
+				{% csrf_token %}
+				<div class="col-md-8 container-fluid">
+					<div style="position: relative;  padding-bottom: 5%">
+					<h1 class="text-center"><img src="{% static "genomebrowseq.png" %}" style="width:70%;" ></h1>
+					</div>
+					<div class="form-group" style="position: relative;">
+						<div class="input-group">
+							<input class="form-control" type="text" name="search" id="search" placeholder="Search" required/>
+							<span class="input-group-btn">
+								<button class="btn btn-success" type="submit">
+									<span class="glyphicon glyphicon-search" aria-hidden="true">
+										<span style="margin-left:10px;">Search</span>
+								</button>
+								</span>
+							</span>
+						</div>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" id="GSE" onclick="buscarGSE()">Activate GSE in NCBI</label>
+					</div>
+				</div>
 
-	        </form>
-					{% endblock %}
-	    </div>
+			</form>
+			{% endblock %}
+		</div>
+		{% endblock %}
 	</div>
-	{% endblock %}
+	
+
+
 </body>
 
 </html>

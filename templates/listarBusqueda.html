@@ -7,48 +7,52 @@
 
 {% block contenido %}
 <style>
-
+th{
+	text-align:center;
+}
 </style>
 	 <script src="{% static 'function.js' %}"></script>
 	 <script >
 		mostrarResultados({{coincidencias|safe }})
-	 </script>
-<body>
-
-<div class="container">
-
+			 </script>
+<div align="center" style="padding-bottom: 1%; padding-top: 1%;">
+	<img class="center-block" style="width: auto; float: none" src="{% static "genomeminibrowseq.png" %} ">
+</div>
 
 <nav  class="navbar navbar-expand-lg bg-white ">
-	<div class="navbar-header col-lg-8">
-		 <h1>Experiments</h1>
+	<div class="col-lg-8">
+		 <h2>Results on : "{{busqueda}}"</h2>
 	 </div>
 	<form class="form-inline my-2 my-lg-0" role="form" action="{% url 'buscarDatos' %}" method="post">
 		{% csrf_token %}
 							<input type="text" class="form-control col" name="search" id="search" placeholder="Search" >
 									 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+									 <div class="checkbox">
+ 				 							<label><input type="checkbox" id="GSE"  onclick="buscarGSE()">Activate GSE in NCBI</label>
+ 			 						</div>
 	</form>
 </nav>
 	<table >
     <tbody>
 			<tr>
 <!-- Mostrar resultados en función de la bd -->
-				<td class="col-8" style="padding-top:1.8%">
+				<td class="col-8" style="padding-top:1.8%;">
 					<nav aria-label="Page navigation " id="paginator1"  >
 							<ul class="pagination justify-content-center"></ul>
 					</nav>
 				</td>
 				<!-- Contador de resultados -->
 			<td >
-				<div class="col-lg">
-						<label >Ncbi results</label> <!-- purely semantic -->
-						<div class="form-control input-sm center merge-bottom-input" name="first">{{total_casos_ncbi|safe}}</div>
-				</div> <!-- end column -->
-			</td >
-			<td >
-				<div class="col-lg">
-					<label>Arrayexpress results</label> <!-- purely semantic -->
+				
+					<td style="float: left;"><label >NCBI results</label> <!-- purely semantic --></td>
+					<td>	
+						<div class="form-control input-sm  merge-bottom-input" name="first">{{total_casos_ncbi|safe}}</div>
+					</td>
+					<td style="float: left;">
+					<label>ArrayExpress results</label></td>
+					<td>
 					<div class="form-control input-sm center merge-bottom-input" name="first">{{total_casos_array|safe}}</div>
-				</div> <!-- end column -->
+				</td>
 			</td >
 				<td >
 					<div class="dropdown col-lg">
@@ -56,8 +60,8 @@
 					    Select Data Base
 						</button>
 					  <div class="dropdown-menu ">
-					    <a class="dropdown-item" onclick="orbenarPorBD('ncbi_gds')">Ncbi</a>
-					    <a class="dropdown-item" onclick="orbenarPorBD('arrayexpress')">Arrayexpress</a>
+					    <a class="dropdown-item" onclick="orbenarPorBD('NCBI')">NCBI</a>
+					    <a class="dropdown-item" onclick="orbenarPorBD('ArrayExpress')">ArrayExpress</a>
 							<a class="dropdown-item" onclick="orbenarPorBD('none')">All</a>
 					  </div>
 					</div>
@@ -69,8 +73,8 @@
 									 <button class="btn btn-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 Order by</button>
 						        <div class="dropdown-menu">
-						            <a class="dropdown-item"  onclick="orderByDate('ascending')">ascending date </a></li>
-												<a class="dropdown-item" onclick="orderByDate('descending')">descending date </a></li>
+						            <a class="dropdown-item"  onclick="orderByDate('ascending')">Ascending Date </a></li>
+												<a class="dropdown-item" onclick="orderByDate('descending')">Descending Date </a></li>
 						            <a class="dropdown-item" onclick="orderByTecnology()">Technology </a></li>
 						            <a class="dropdown-item" onclick="orderBySpecie()">Specie</a>
 						        </div>
@@ -83,7 +87,7 @@
     </tbody>
 	</table >
 
-		<div class="panel-body table-responsive" >
+		<div class="panel-body table-responsive row" >
 				<table class="table-bordered table-list" id="acrylic" style="text-align: left;">
 					<thead>
 						<tr class="bg-dark" style="color:white">
@@ -128,8 +132,7 @@
 		</div>
 						<!-- Modal -->
 
-					</div>
-</body>
+
 
 <form  style="display: none;" name="formularioExpediente" role="form" action="{% url 'seeExpedient' %}" method="post" target="_blank" >{% csrf_token %}
 	<input id=myInput type="text" name="myInput" value="">

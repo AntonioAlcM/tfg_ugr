@@ -2,7 +2,6 @@ confusable-homoglyphs
 django==1.11
 django-registration
 django-registration-redux
-django-celery
 first
 pip-tools
 pytz

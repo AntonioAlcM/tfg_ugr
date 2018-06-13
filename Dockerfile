@@ -2,11 +2,11 @@ FROM python:3
 # Autor
 MAINTAINER Antonio Alcalá Martínez
 
-CMD apt-get update -y
-CMD apt-get upgrade -y
-CMD apt-get install -y python-celery
-CMD apt-get install -y python3-celery
-CMD apt-get install -y build-essential tcl
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install -y python-celery
+RUN apt-get install -y python3-celery
+RUN apt-get install -y build-essential tcl
 RUN pip install -U pip
 RUN pip3 install -U pip
 RUN wget http://download.redis.io/redis-stable.tar.gz

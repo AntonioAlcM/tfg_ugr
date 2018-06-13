@@ -1,0 +1,13 @@
+body {
+    height: auto;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    font-weight: normal;
+    line-height: 1.5;
+}
+div#cabecera {
+    position: relative;
+    width: 100%;
+	border-color: #6D6C71;
+}

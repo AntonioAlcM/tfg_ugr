@@ -36,11 +36,9 @@ function orbenarPorBD(bd){
 function visualiza_filas (inicio, fin) {
    $(function () {
         var content = '';
-
-
         //content += '<tbody>'; -- **superfluous**finf
           for (var index = inicio; (index < datos_recibidos.length) && (index < fin) ; index++) {
-            if(datos_recibidos[index]['bd'] == 'ncbi_gds' ){
+            if(datos_recibidos[index]['bd'] == 'NCBI' ){
                 content += '<tr bgcolor="#5DADE2">'
               }else{
           content += '<tr bgcolor="#82E0AA">'
@@ -79,7 +77,7 @@ function seeExpedient(index){
   document.forms["formularioExpediente"].submit();
 }
 function orderByDate(order){
-  if(order == 'descending'){
+  if(order == 'ascending'){
     datos_recibidos.sort(function(a, b){return new Date(a.releasedate)-new Date(b.releasedate)});
   }else{
     datos_recibidos.sort(function(a, b){return new Date(b.releasedate)-new Date(a.releasedate)});
@@ -279,3 +277,16 @@ $('#myTable').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers
         }
     }
   });
+  function buscarGSE() {
+    // Get the checkbox
+    var checkBox = document.getElementById("GSE");
+  	var content=""
+    // Get the output text
+
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true){
+  		document.forms.formulario.action="{% url 'buscarDatosGSE' %}"
+    }else{
+  		document.forms.formulario.action="{% url 'buscarDatos' %}"
+  	}
+  }
