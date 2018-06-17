@@ -39,10 +39,10 @@ class TestBusqueda(TestCase):
 		self.assertEqual(views.cargarPaginaBusqueda(request).status_code,200)
 	def test_tratamientoDatos(self):
 		self.assertIsInstance(self.tratamientoDatos, views.TratamientosDatos)
-	def test_almacenar_datos_visualización_ncbi(self):
+	def test_almacenar_datos_visualizacion_ncbi(self):
 		self.assertIsNotNone( self.tratamientoDatos.almacenar_datos_visualizacion_ncbi())
 		self.assertIsInstance(self.tratamientoDatos.almacenar_datos_visualizacion_ncbi(), list)
-	def test_almacenar_datos_visualización_array(self):
+	def test_almacenar_datos_visualizacion_array(self):
 		self.assertIsNotNone( self.tratamientoDatos.almacenar_datos_visualizacion_array())
 		self.assertIsInstance(self.tratamientoDatos.almacenar_datos_visualizacion_array(), list)
 	def test_unir_vectores(self):
