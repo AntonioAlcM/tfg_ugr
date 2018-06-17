@@ -71,7 +71,6 @@ function visualiza_filas (inicio, fin) {
    });
 };
 function seeExpedient(index){
-
   var data=JSON.stringify({"accession":datos_recibidos[index]['accession'], "file": datos_recibidos[index] })
   document.getElementById("myInput").value = data;
   document.forms["formularioExpediente"].submit();

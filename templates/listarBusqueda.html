@@ -25,7 +25,7 @@ th{
 	 </div>
 	<form class="form-inline my-2 my-lg-0" role="form" action="{% url 'buscarDatos' %}" method="post">
 		{% csrf_token %}
-							<input type="text" class="form-control col" name="search" id="search" placeholder="Search" >
+							<input type="text" class="form-control col" name="search" id="search" placeholder="Search" /required>
 									 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 									 <div class="checkbox">
  				 							<label><input type="checkbox" id="GSE"  onclick="buscarGSE()">Activate GSE in NCBI</label>

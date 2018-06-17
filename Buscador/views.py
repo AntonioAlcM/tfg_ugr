@@ -185,7 +185,7 @@ def inicializarBuscador(request):
         while data_array.status == 'PENDING' and cnt < 3:
             time.sleep(0.2)
             cnt += 1
-        if data_ncbi.get()['esearchresult']['retmax'] == '0' and cnt == 2:
+        if data_ncbi.get()['esearchresult']['retmax'] == '0' and cnt == 3:
             return render(request, 'NoResults.html')
         else:
             context = {"enlaces_busqueda": [
@@ -215,7 +215,7 @@ def inicializarBuscadorGSE(request):
         else:
             context = {"enlaces_busqueda": [
                 data_ncbi, data_array], "busqueda": request.POST['search']}
-            return render(request, 'loader.html', context)
+            return render(request, 'loader.html', context)   
     else:
         return render(request, 'index.html')
 
@@ -238,8 +238,6 @@ def sendFile(request):
                 if re.findall(regex_grch, i.decode('utf-8', errors="ignore").lower()):
                     genome.append(re.findall(regex_grch, i.decode(
                         'utf-8', errors="ignore").lower())[0][0])
-                    print(re.findall(regex_grch, i.decode(
-                        'utf-8', errors="ignore").lower())[0][0])
                 if re.findall(regex_grcm, i.decode('utf-8', errors="ignore").lower()):
                     genome.append(re.findall(regex_grcm, i.decode(
                         'utf-8', errors="ignore").lower())[0][0])
@@ -256,21 +254,24 @@ def sendFile(request):
         return render(request, 'expedient.html', context)
     else:
         if searched_file['file']:
-            archivo = urlopen('https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=' +
-                              searched_file['file']['samples'][0]['accession']).readlines()
-            for i in archivo:
-                if i:
-                    if re.findall(regex_hg, i.decode('utf-8', errors="ignore").lower()):
-                        genome.append(re.findall(regex_hg, i.decode(
-                            'utf-8', errors="ignore").lower())[0][0])
-                    if re.findall(regex_grch, i.decode('utf-8', errors="ignore").lower()):
-                        genome.append(re.findall(regex_grch, i.decode(
-                            'utf-8', errors="ignore").lower())[0][0])
-                    if re.findall(regex_grcm, i.decode('utf-8', errors="ignore").lower()):
-                        genome.append(re.findall(regex_grcm, i.decode(
-                            'utf-8', errors="ignore").lower())[0][0])
-            if genome:
-                genome = set(genome)
+            if len(searched_file['file']['samples'])>0: 
+                archivo = urlopen('https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=' +
+                                searched_file['file']['samples'][0]['accession']).readlines()
+                for i in archivo:
+                    if i:
+                        if re.findall(regex_hg, i.decode('utf-8', errors="ignore").lower()):
+                            genome.append(re.findall(regex_hg, i.decode(
+                                'utf-8', errors="ignore").lower())[0][0])
+                        if re.findall(regex_grch, i.decode('utf-8', errors="ignore").lower()):
+                            genome.append(re.findall(regex_grch, i.decode(
+                                'utf-8', errors="ignore").lower())[0][0])
+                        if re.findall(regex_grcm, i.decode('utf-8', errors="ignore").lower()):
+                            genome.append(re.findall(regex_grcm, i.decode(
+                                'utf-8', errors="ignore").lower())[0][0])
+                if genome:
+                    genome = set(genome)
+                else:
+                    genome.append("Not Available")
             else:
                 genome.append("Not Available")
         context = {"file": searched_file['file']}
