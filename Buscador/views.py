@@ -142,36 +142,18 @@ class TratamientosDatos():
         return vector_busqueda
 
 
-'''
-def descargaDeContenido(request):
-    if request.method == 'POST':
-        enlace=request.POST['enlace']
-        direccion=enlace.split('//',1)
-        direccion_cortada=direccion[1].split('/',1)
-        direccion_servidor=direccion_cortada[1].split('/',7)
-        ftp = FTP(direccion_cortada[0])
-        ftp.login()
-        direccion=direccion_servidor[0]+"/"+direccion_servidor[1]+"/"+direccion_servidor[2]+"/"+direccion_servidor[3]+"/"+direccion_servidor[4]+"/"+direccion_servidor[5]+"/"+direccion_servidor[6]
-        ftp.cwd(direccion)
-        dirs=ftp.nlst()
-        for i in dirs:
-            ftp.retrbinary('RETR %s' % os.path.basename(j),file_handler)#La recepción
-            archivo = eg.filesavebox(title="Guardar",default=j)
-            tam=archivo.count('/')
-            ruta_guardado=""
-            for rut in archivo.split('/',tam):
-                ruta_guardado+='/'
-                ruta_guardado+=rut
-            ftp.retrbinary('RETR '+j, open('~/', 'wb').write)
-        ftp.quit()
-        return JsonResponse('ok', safe=False)
-'''
+
 # def busqueda_avanzada(palabra_clave, tecnologia_secuenciacion,localizacion, organismo, base_datos):
 #	if (base_datos=="ncbi"):
 
 
 @csrf_exempt
 def inicializarBuscador(request):
+    palabra_clave=""
+    data_ncbi=""
+    data_array=""
+    url_ncbi=""
+    url_array=""
     if request.method == "POST":
         palabra_clave = request.POST['search']
         palabra_clave = palabra_clave.replace(' ', '%20')

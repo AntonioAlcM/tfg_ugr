@@ -6,9 +6,11 @@ from datetime import timedelta
 from kombu import Exchange, Queue, binding
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BuscadorBDMedical.settings')
-app = Celery('BuscadorBDMedical', backend='redis://localhost:6379', broker='redis://localhost:6379')
+app = Celery('BuscadorBDMedical', backend='redis://localhost:6379/0', broker='redis://localhost:6379')
 #broker='redis://localhost:6379'
+#
 app.config_from_object('django.conf:settings')
+app.conf.broker_transport_options = {'visibility_timeout': 43200}
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.update(
     CELERY_ACCEPT_CONTENT = ['json', 'pickle'],
